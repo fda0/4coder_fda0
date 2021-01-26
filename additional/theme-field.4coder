@@ -1,0 +1,55 @@
+
+defcolor_back = 0xFF282723;
+defcolor_list_item = {0xFF21201d, 0xFF1a1916};
+defcolor_list_item_hover = {0xFF683733, 0xFF582723};
+defcolor_list_item_active = {0xFF483733, 0xFF382723};
+defcolor_cursor = {0xFFaffa00, 0xFFff0000};
+defcolor_at_cursor = 0xFFFF00FF;                        // ?
+defcolor_highlight_cursor_line = 0x51000000;
+defcolor_highlight = 0xFFffcccc;
+defcolor_mark = 0xFFff00ff;                             // ?
+defcolor_text_default = 0xFFffe0b3;
+defcolor_at_highlight = defcolor_back;
+defcolor_comment = 0xFFbababa;
+defcolor_comment_pop = {0xFF50df0a, 0xFFff0000, 0xFFffff00};
+
+defcolor_keyword = 0xFFefffff;
+defcolor_preproc = defcolor_keyword;
+defcolor_str_constant = 0xFF26ae95;
+defcolor_int_constant = 0xFF16fe75;
+defcolor_char_constant = defcolor_int_constant;
+defcolor_float_constant = defcolor_int_constant;
+defcolor_bool_constant = defcolor_int_constant;
+defcolor_include = defcolor_int_constant;
+defcolor_special_character = 0xFFff00ff;                // ?
+defcolor_ghost_character = 0xFFccffff;
+
+defcolor_paste = 0xFFffff00;
+defcolor_undo = 0xFF00ffff;
+
+defcolor_highlight_junk = 0x70550000;
+defcolor_highlight_white = 0x40aaaaff;
+
+defcolor_bar = 0xFF0c0c0c;
+defcolor_bar_active = 0xFFff00ff;                       // ?
+defcolor_base = 0xFFccc0ad;
+defcolor_pop1 = defcolor_str_constant;
+defcolor_pop2 = defcolor_int_constant;
+
+defcolor_back_cycle = {0x080000ff, 0x08ffff00, 0x08ff0000, 0x0800ffff};
+defcolor_text_cycle = {0xFFff1212, 0xFF12FA12, 0xFFFAFA12, 0xFF00ffff};
+
+defcolor_line_numbers_back = defcolor_keyword;
+defcolor_line_numbers_text = defcolor_str_constant;
+defcolor_margin = 0xff000000;
+defcolor_margin_hover = defcolor_int_constant;
+defcolor_margin_active = 0xFF807b6f;
+
+// custom
+defcolor_type = 0xFFffbf40;
+defcolor_function = 0xFF40bfFF;
+defcolor_macro = 0xFFff5050;
+defcolor_4coder_command = 0xFFff00ff;                   // ?
+defcolor_declaration = 0xFF572db3;
+defcolor_hover_background = 0x88000000;
+defcolor_brace_highlight = 0xff8ffff2;

@@ -1,0 +1,210 @@
+
+keys_global = {
+    // Row 0
+    { "fda0_enter_input_mode", "Escape" },
+    
+    { "toggle_mouse",                      "F1", "Alt" },
+    
+    { "project_fkey_command", "F2" },
+    { "project_fkey_command", "F3" },
+    { "project_fkey_command", "F4" },
+    { "exit_4coder",          "F4", "Alt" },
+    
+    { "project_fkey_command", "F5" },
+    { "project_fkey_command", "F6" },
+    { "project_fkey_command", "F7" },
+    { "project_fkey_command", "F8" },
+    { "project_fkey_command", "F9" },
+    { "project_fkey_command", "F10" },
+    { "project_fkey_command", "F11" },
+    { "toggle_fullscreen",    "F11", "Alt" },
+    { "project_fkey_command", "F12" },
+    { "project_fkey_command", "F13" },
+    { "project_fkey_command", "F14" },
+    { "project_fkey_command", "F15" },
+    { "project_fkey_command", "F16" },
+    
+    
+    // Row 1
+    { "fda0_center_view_around_top", "Insert" },
+    { "center_view",                 "Insert", "Shift" },
+    
+    // Row 2
+    { "change_active_panel",           "1", "Control" }, // +C
+    { "change_active_panel_backwards", "1", "Control", "Shift" }, // +C
+    { "change_to_build_panel",         "Minus", "Control" }, // +C
+    { "close_build_panel",             "Equal", "Control" }, // +C
+    
+    
+    // Row 3
+    { "open_in_other",             "O", "Alt" },
+    { "interactive_open_or_new",   "O", "Control" }, // +C
+    
+    
+    // Row 4
+    { "save_all_dirty_buffers",    "S", "Shift", "Control" },
+    
+    { "load_theme_current_buffer", "L", "Control", "Shift" },
+    
+    
+    // Row 5
+    { "command_lister",                "B", "Control" }, // +C
+    { "interactive_new",               "N", "Control" }
+    
+};
+
+keys_shared = {
+    // Row 0
+    { "keyboard_macro_finish_recording", "ScrollLock" },
+    { "keyboard_macro_start_recording",  "ScrollLock", "Shift" },
+    { "keyboard_macro_replay",           "Pause" },
+    
+    
+    // Row 1
+    { "seek_beginning_of_line", "Home" },
+    { "page_up",                "PageUp" },
+    { "goto_beginning_of_file", "PageUp", "Control" },
+    
+    
+    // Row 2
+    { "seek_end_of_line",       "End" },
+    { "page_down",              "PageDown" },
+    { "goto_end_of_file",       "PageDown", "Control" },
+    
+    
+    // Row 3
+    { "save", "S", "Control" },
+    
+    { "if_read_only_goto_position",            "Return" },
+    { "if_read_only_goto_position_same_panel", "Return", "Shift" },
+    
+    
+    // Row 4
+    { "move_up",                   "Up" },
+    { "move_line_up",              "Up", "Alt" },
+    { "move_up_to_blank_line_end", "Up", "Shift" },
+    { "fda0_scroll_up",            "Up", "Control" },
+    
+    
+    // Row 5
+    { "fda0_toggle_function_helper",                   "Menu" },
+//    { "fleury_code_peek",                              "Menu", "Shift" },
+    
+    { "move_left",                                     "Left" },
+    { "move_left_alpha_numeric_or_camel_boundary",     "Left", "Alt" },
+    { "move_left_token_boundary",                      "Left", "Control" },
+    { "move_left_whitespace_boundary",                 "Left", "Shift" },
+    
+    { "move_down",                                     "Down" },
+    { "move_line_down",                                "Down", "Alt" },
+    { "move_down_to_blank_line_end",                   "Down", "Shift" },
+    
+    { "move_right",                                    "Right" },
+    { "move_right_alpha_numeric_or_camel_boundary",    "Right", "Alt" },
+    { "move_right_token_boundary",                     "Right", "Control" },
+    { "move_right_whitespace_boundary",                "Right", "Shift" },
+    { "fda0_scroll_down",                              "Down", "Control" },
+};
+
+keys_file = {
+    // Row 1
+    { "fda0_enter_command_mode",                     "Tick" },
+    { "fda0_insert_tilde",                           "Tick", "Shift" },
+    
+    { "backspace_char",                              "Backspace" },
+    { "backspace_alpha_numeric_boundary",            "Backspace", "Alt" },
+    { "snipe_backward_whitespace_or_token_boundary", "Backspace", "Control" },
+    
+    
+    // Row 2
+    { "word_complete",                               "Tab" },
+    { "word_complete_drop_down",                     "Tab", "Shift" },
+    
+    { "write_todo",                                  "T", "Alt" },
+    
+    { "delete_char",                                 "Delete" },
+    { "delete_alpha_numeric_boundary",               "Delete", "Alt" },
+    { "snipe_forward_whitespace_or_token_boundary",  "Delete", "Control" },
+    
+    
+    // Row 3
+
+    
+    // Row 4
+    { "write_note",        "N", "Alt" },
+    
+    { "fda0_insert_arrow", "Period", "Alt" },
+};
+
+keys_command = {
+    // Row 2
+    { "quick_swap_buffer",             "1" },
+    { "interactive_switch_buffer",     "1", "Shift" },
+    { "kill_buffer",                   "1", "Alt)" },
+    { "change_active_panel",           "2" },
+    { "change_active_panel_backwards", "2", "Shift" },
+    { "swap_panels",                   "3" },
+    { "close_panel",                   "3", "Shift" },
+    { "view_buffer_other_panel",       "4" },
+    { "open_panel_vsplit",             "4", "Shift" },
+    { "open_panel_hsplit",             "4", "Alt" },
+            // TODO(mg): Bind(..., 0); - reserved for toggle build window size
+    { "change_to_build_panel",         "Minus" },
+    { "close_build_panel",             "Equal" },
+    { "open_matching_file_cpp",        "5" },
+    { "open_file_in_quotes",           "6" }, // TODO(mg): share with W key maybe in future
+    
+    
+    
+    // Row 3
+    { "word_complete_drop_down",          "Tab" },
+    
+    
+    { "auto_indent_line_at_cursor",       "Q" },
+    { "auto_indent_range",                "Q", "Alt" },
+    { "auto_indent_whole_file",           "Q", "Shift" },
+    { "jump_to_definition_at_cursor",     "W" },
+    { "list_all_locations_of_identifier", "W", "Shift" },
+    { "jump_to_last_point",               "W", "Alt" },
+    { "query_replace",                    "R" },
+    { "query_replace_identifier",         "R", "Shift" },
+    { "fda0_jump_to_definition",          "T" },
+    { "redo",                             "Y" },
+    
+    { "interactive_open_or_new",          "O" },
+    { "if0_off",                          "P" },
+    
+    { "select_surrounding_scope",         "LeftBracket" },
+    { "place_in_scope",                   "RightBracket" },
+    
+    
+    
+    // Row 4
+    { "cursor_mark_swap",                              "A" },
+    { "save",                                          "S" },
+    { "save_all_dirty_buffers",                        "S", "Shift" },
+    { "delete_range",                                  "D" },
+    { "search",                                        "F" },
+    { "list_all_substring_locations_case_insensitive", "F", "Shift" },
+    { "goto_line",                                     "G" },
+    { "replace_in_range",                              "H" },
+    
+    { "delete_line",                                   "K" },
+    { "duplicate_line",                                "L" },
+    
+    
+    // Row 5
+    { "undo",                  "Z" },
+    { "cut",                   "X" },
+    { "copy",                  "C" },
+    { "paste_and_indent",      "V" },
+    { "command_lister",        "B" },
+    { "goto_next_jump",        "N" },
+    { "goto_prev_jump",        "N", "Shift" },
+    
+    { "comment_line_toggle",   "ForwardSlash" },
+    
+    
+    // Row 6
+    { "set_mark", "Space" },
+};
