@@ -206,15 +206,15 @@ fda0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
     {
         if (a->primary.size == b->primary.size)
         {
-            if (a->description.size == b->description.size)
+            i32 primary_compare = string_compare(a->primary, b->primary);
+            if (primary_compare == 0)
             {
-                i32 primary_compare = string_compare(a->primary, b->primary);
-                if (primary_compare < 0) 
+                if (a->description.size < b->description.size) 
                 { 
                     a_goes_first = true; 
                 }
             }
-            else if (a->description.size < b->description.size) 
+            else if (primary_compare < 0) 
             { 
                 a_goes_first = true; 
             }

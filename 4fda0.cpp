@@ -3,11 +3,11 @@
 #include <string.h>
 
 
-#define Fda0_Bookmark 1 // TODO(fda0): Marked changes in custom/ <- pull them out to this layer in the future
+#define Fda0_Bookmark 1 // NOTE(fda0): A way to toggle my changes in default files.
 #include "4coder_default_include.cpp"
 
 
-#define Enable_Modal_Bindings 1 // NOTE(fda0): Modal mode inspired by Casey's config
+#define Fda0_Enable_Modal_Bindings 1 // NOTE(fda0): Modal mode inspired by Casey's config
 // Adds keys_shared (new!) that is a parent for keys_file (grandparent for keys_code) and keys_command (new!)
 // Command fda0_toggle_editor_mode switches between code & command mode.
 // For now current mode is enforced on every tick in fda0_tick. You may want to change this behavior.
@@ -29,99 +29,16 @@ function void fda0_setup_essential_mapping(Mapping *mapping, i64 global_id, i64 
 #include "4fleury_brace.cpp"
 #include "4fleury_others.cpp"
 
+#include "4fda0_utilities.cpp"
 #include "4fda0_commands.cpp"
 #include "4fda0_definitions_lister.cpp"
 
-
-
-
-inline u64 
-fda0_get_hash(u8 *str, u64 size)
-{
-    u64 hash = 0;
-    
-    for (u64 byte_index = 0;
-         byte_index < size;
-         ++byte_index)
-    {
-        u8 b = str[byte_index];
-        
-        // NOTE(mg): djb2 hash. Get better hash function?
-        hash = ((hash << 5) + hash) + b;
-    }
-    
-    return hash;
-}
-
-inline u64 
-fda0_get_hash(String_Const_u8 string)
-{
-    u64 hash = fda0_get_hash(string.str, string.size);
-    
-    return hash;
-}
+#include "4fda0_startup.cpp"
 
 
 
 
 
-
-
-////////////////////////////////
-
-DELTA_RULE_SIG(F4_DeltaRule)
-{
-    // NOTE(fda0): Taken from Rayn Fleury's layer
-    Vec2_f32 *velocity = (Vec2_f32*)data;
-    if (velocity->x == 0.f)
-    {
-        velocity->x = 1.f;
-        velocity->y = 1.f;
-    }
-    Smooth_Step step_x = smooth_camera_step(pending.x, velocity->x, 80.f, 1.f/4.f);
-    Smooth_Step step_y = smooth_camera_step(pending.y, velocity->y, 80.f, 1.f/4.f);
-    *velocity = V2f32(step_x.v, step_y.v);
-    return(V2f32(step_x.p, step_y.p));
-}
-
-
-
-
-void
-custom_layer_init(Application_Links *app)
-{
-    Thread_Context *tctx = get_thread_context(app);
-    
-    // NOTE(allen): setup for default framework
-    default_framework_init(app);
-    
-    // NOTE(allen/fda0): default hooks and command maps
-    set_all_default_hooks(app);
-    mapping_init(tctx, &framework_mapping);
-    String_ID global_map_id = vars_save_string_lit("keys_global");
-    String_ID file_map_id = vars_save_string_lit("keys_file");
-    fda0_code_map_id = vars_save_string_lit("keys_code");
-    String_ID shared_map_id = vars_save_string_lit("keys_shared");
-    fda0_command_map_id = vars_save_string_lit("keys_command");
-#if OS_MAC
-    setup_mac_mapping(&framework_mapping, global_map_id, file_map_id, fda0_code_map_id);
-#else
-    setup_default_mapping(&framework_mapping, global_map_id, file_map_id, fda0_code_map_id);
-#endif
-    
-#if Enable_Modal_Bindings
-	fda0_setup_essential_mapping(&framework_mapping,
-                                 global_map_id, file_map_id, fda0_code_map_id,
-                                 shared_map_id, fda0_code_map_id);
-#else
-    setup_essential_mapping(&framework_mapping, global_map_id, file_map_id, fda0_code_map_id);
-#endif
-    
-    // NOTE(fda0): Hooks
-    set_custom_hook(app, HookID_RenderCaller, fda0_render);
-    set_custom_hook(app, HookID_Tick, fda0_tick);
-    set_custom_hook(app, HookID_DeltaRule, F4_DeltaRule);
-}
 
 
 
@@ -175,11 +92,17 @@ fda0_tick(Application_Links *app, Frame_Info frame_info)
 {
     default_tick(app, frame_info);
     
-#if Enable_Modal_Bindings
+#if Fda0_Enable_Modal_Bindings
     // NOTE(fda0): Update keyboard profile (hacky)
     set_current_mapid(app, fda0_command_mode ? fda0_command_map_id : fda0_code_map_id);
 #endif
 }
+
+
+
+
+
+
 
 
 
@@ -457,6 +380,18 @@ fda0_render_buffer(Application_Links *app, View_ID view_id, Face_ID face_id,
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 function void
 fda0_render(Application_Links *app, Frame_Info frame_info, View_ID view_id)
 {
@@ -539,6 +474,11 @@ fda0_render(Application_Links *app, Frame_Info frame_info, View_ID view_id)
     text_layout_free(app, text_layout_id);
     draw_set_clip(app, prev_clip);
 }
+
+
+
+
+
 
 
 
