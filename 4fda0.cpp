@@ -5,8 +5,6 @@
 
 
 //~ NOTE(fda0): Configuration switches
-#define Fda0_Bookmark 1 // A way to toggle my changes in default files.
-
 #define Fda0_Modal_Bindings 1 // Use to enable "modal mode" inspired by Casey's config
 // Adds keys_shared (new) and keys_command (new)
 // keys_shared becomes a parent for keys_command and keys_file (and therefore also a grandparent for keys_code)
@@ -21,6 +19,7 @@
 
 
 //~////////////////////
+#define Fda0_Bookmark 1 // ignore this - for toggling my changes in default_include files
 #include "4coder_default_include.cpp"
 #include "4fda0_global_data.cpp"
 #include "generated/managed_id_metadata.cpp"
