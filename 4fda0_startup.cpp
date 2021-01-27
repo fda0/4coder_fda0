@@ -36,14 +36,14 @@ fda0_4coder_initialize(Application_Links *app, String_Const_u8_Array file_names,
     String_ID global_map_id = vars_save_string_lit("keys_global");
     String_ID file_map_id = vars_save_string_lit("keys_file");
     String_ID code_map_id = vars_save_string_lit("keys_code");
-#if Fda0_Enable_Modal_Bindings
+#if Fda0_Modal_Bindings
     String_ID shared_map_id = vars_save_string_lit("keys_shared");
     String_ID command_map_id = vars_save_string_lit("keys_command");
 #endif
     
     if (dynamic_binding_load_from_file(app, &framework_mapping, bindings_file_name))
     {
-#if Fda0_Enable_Modal_Bindings
+#if Fda0_Modal_Bindings
         fda0_setup_essential_mapping(&framework_mapping, global_map_id, file_map_id, code_map_id, shared_map_id, command_map_id);
 #else
         setup_essential_mapping(&framework_mapping, global_map_id, file_map_id, code_map_id);
@@ -192,7 +192,7 @@ custom_layer_init(Application_Links *app)
     String_ID file_map_id = vars_save_string_lit("keys_file");
     fda0_code_map_id = vars_save_string_lit("keys_code");
     
-#if Fda0_Enable_Modal_Bindings
+#if Fda0_Modal_Bindings
     String_ID shared_map_id = vars_save_string_lit("keys_shared");
     fda0_command_map_id = vars_save_string_lit("keys_command");
 #endif
@@ -207,7 +207,7 @@ custom_layer_init(Application_Links *app)
     
     
     
-#if Fda0_Enable_Modal_Bindings
+#if Fda0_Modal_Bindings
 	fda0_setup_essential_mapping(&framework_mapping,
                                  global_map_id, file_map_id, fda0_code_map_id,
                                  shared_map_id, fda0_code_map_id);
@@ -215,10 +215,16 @@ custom_layer_init(Application_Links *app)
     setup_essential_mapping(&framework_mapping, global_map_id, file_map_id, fda0_code_map_id);
 #endif
     
+    
     // NOTE(fda0): Hooks
+#if Fda0_Render
     set_custom_hook(app, HookID_RenderCaller, fda0_render);
-    set_custom_hook(app, HookID_Tick, fda0_tick);
+#endif
+#if Fda0_Delta_Rule
     set_custom_hook(app, HookID_DeltaRule, F4_DeltaRule);
+#endif
+    
+    set_custom_hook(app, HookID_Tick, fda0_tick);
 }
 
 

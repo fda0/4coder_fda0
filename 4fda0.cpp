@@ -3,28 +3,39 @@
 #include <string.h>
 
 
-#define Fda0_Bookmark 1 // NOTE(fda0): A way to toggle my changes in default files.
+
+//~ NOTE(fda0): Configuration switches
+#define Fda0_Bookmark 1 // A way to toggle my changes in default files.
+
+#define Fda0_Modal_Bindings 1 // Use to enable "modal mode" inspired by Casey's config
+// Adds keys_shared (new) and keys_command (new)
+// keys_shared becomes a parent for keys_command and keys_file (and therefore also a grandparent for keys_code)
+//
+// Commands for changing keyboard map: fda0_toggle_editor_mode, fda0_enter_input_mode, fda0_enter_command_mode
+//
+// Keyboard map is enforced on every tick in fda0_tick. You may want to change this behavior
+
+#define Fda0_Render 1 // 1 = custom render rules, 0 = default 4coder rules
+#define Fda0_Delta_Rule 1 // 1 = custom Fleury's scrolling behavior, 0 = default
+
+
+
+//~////////////////////
 #include "4coder_default_include.cpp"
-
-
-#define Fda0_Enable_Modal_Bindings 1 // NOTE(fda0): Modal mode inspired by Casey's config
-// Adds keys_shared (new!) that is a parent for keys_file (grandparent for keys_code) and keys_command (new!)
-// Command fda0_toggle_editor_mode switches between code & command mode.
-// For now current mode is enforced on every tick in fda0_tick. You may want to change this behavior.
-
-
 #include "4fda0_global_data.cpp"
 #include "generated/managed_id_metadata.cpp"
 
 
-// NOTE(fda0): Forward declarations
-function void
-fda0_render_buffer(Application_Links *app, View_ID view_id, Face_ID face_id, Buffer_ID buffer, Text_Layout_ID text_layout_id, Rect_f32 rect);
+
+//~ NOTE(fda0): Forward declarations
+function void fda0_render_buffer(Application_Links *app, View_ID view_id, Face_ID face_id, Buffer_ID buffer, Text_Layout_ID text_layout_id, Rect_f32 rect);
 function void fda0_render(Application_Links *app, Frame_Info frame_info, View_ID view_id);
 function void fda0_tick(Application_Links *app, Frame_Info frame_info);
 function void fda0_setup_essential_mapping(Mapping *mapping, i64 global_id, i64 file_id, i64 code_id, i64 shared_id, i64 command_id);
 
 
+
+//~////////////////////
 #include "4fleury_cursor.cpp"
 #include "4fleury_brace.cpp"
 #include "4fleury_others.cpp"
@@ -38,6 +49,9 @@ function void fda0_setup_essential_mapping(Mapping *mapping, i64 global_id, i64 
 
 
 
+//~////////////////////
+// TODO(fda0): Show whitespace shouldn't color '\n' or '\r'
+// TODO(fda0): Color "\ " (escaped spaces) to catch bugs in #define
 
 
 
@@ -47,9 +61,9 @@ function void fda0_setup_essential_mapping(Mapping *mapping, i64 global_id, i64 
 
 
 
-////////////////////////////////////////////
 
 
+//~//////////////////////////////////////////////////////////////////
 
 function void
 fda0_setup_essential_mapping(Mapping *mapping,
@@ -92,8 +106,8 @@ fda0_tick(Application_Links *app, Frame_Info frame_info)
 {
     default_tick(app, frame_info);
     
-#if Fda0_Enable_Modal_Bindings
-    // NOTE(fda0): Update keyboard profile (hacky)
+#if Fda0_Modal_Bindings
+    // NOTE(fda0): Update keyboard profile (hacky?)
     set_current_mapid(app, fda0_command_mode ? fda0_command_map_id : fda0_code_map_id);
 #endif
 }
