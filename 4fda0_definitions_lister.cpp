@@ -1,10 +1,20 @@
 
-//~ NOTE(fda0): I think this file is self contained enough to work everywhere without much effort.
-// Only thing that requires changing/preparation are defcolors.
-// You need to define these colors at the start of your layer:
-// [defcolor_type, defcolor_function, defcolor_declaration, defcolor_macro]
-// example: CUSTOM_ID(colors, defcolor_type); // now it can be used in themes etc
-// Or modify fda0_lister_render to use different defcolors.
+//~ NOTE(fda0): This file should be self contained enough to "just work" in 4coder 4.1.7
+//
+// Define following macros before including this file to change colors:
+#ifndef Fda0_Color_Type
+#define Fda0_Color_Type defcolor_type
+#endif
+#ifndef Fda0_Color_Function
+#define Fda0_Color_Function defcolor_function
+#endif
+#ifndef Fda0_Color_Fordward_Declaration
+#define Fda0_Color_Fordward_Declaration defcolor_declaration
+#endif
+#ifndef Fda0_Color_Macro
+#define Fda0_Color_Macro defcolor_macro
+#endif
+
 
 
 //~ NOTE(fda0): Forward declarations
@@ -69,16 +79,10 @@ enum Fda0_Coded_Description : u8
     Fda0_CodedDesc_Type,
     Fda0_CodedDesc_Macro,
     Fda0_CodedDesc_Function,
-    Fda0_CodedDesc_FunctionDeclaration,
+    Fda0_CodedDesc_Forward,
     
     Fda0_CodedDesc_Count
 };
-
-inline void
-fda0_add_coded_description(String_Const_u8 *string, Fda0_Coded_Description code)
-{
-    string->str[string->size++] = code;
-}
 
 struct Fda0_Decode_Result
 {
@@ -103,16 +107,20 @@ fda0_decode_description(String_Const_u8 string)
 }
 
 function String_Const_u8
-fda0_push_buffer_range_plus_hidden_one(Application_Links *app, Arena *arena, Buffer_ID buffer, Range_i64 range){
+fda0_push_buffer_range_plus_bonus_space(Application_Links *app, Arena *arena, Buffer_ID buffer, Range_i64 range,
+                                        i64 bonus_spaces_count){
     String_Const_u8 result = {};
     i64 length = range_size(range);
-    if (length > 0){
+    if (length > 0)
+    {
         Temp_Memory restore_point = begin_temp(arena);
-        u8 *memory = push_array(arena, u8, length+1);
-        if (buffer_read_range(app, buffer, range, memory)){
-            result = SCu8(memory, length);
+        u8 *memory = push_array(arena, u8, length + bonus_spaces_count);
+        if (buffer_read_range(app, buffer, range, memory))
+        {
+            result = SCu8(memory, length + bonus_spaces_count);
         }
-        else{
+        else
+        {
             end_temp(restore_point);
         }
     }
@@ -161,7 +169,7 @@ internal Fda0_Li_Split_Result
 fda0_li_split(Fda0_Lister_Item* source)
 {
     // NOTE(fda0): Taken and modified from: https://www.geeksforgeeks.org/merge-sort-for-linked-list/
-    // TODO(fda0): I have heavy suspicion that tracking lengths/indexes would be faster
+    // NOTE(fda0): I have heavy suspicion that tracking lengths/indexes would be faster
     
     Fda0_Lister_Item* fast = source->next;
     Fda0_Lister_Item* slow = source;
@@ -196,8 +204,6 @@ fda0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
     /* Base cases */
     if (a == nullptr) { return b; }
     else if (b == nullptr) { return a; }
-    
-    
     
     
     // NOTE(fda0): Sorting critera
@@ -274,7 +280,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
     
     String_Const_u8 str_type     = push_stringf(scratch, "type%c", Fda0_CodedDesc_Type);
     String_Const_u8 str_func     = push_stringf(scratch, "function%c", Fda0_CodedDesc_Function);
-    String_Const_u8 str_func_dec = push_stringf(scratch, "declaration%c", Fda0_CodedDesc_FunctionDeclaration);
+    String_Const_u8 str_func_dec = push_stringf(scratch, "declaration%c", Fda0_CodedDesc_Forward);
     String_Const_u8 str_macro    = push_stringf(scratch, "macro%c", Fda0_CodedDesc_Macro);
     
     Fda0_Lister_Item *head = nullptr;
@@ -307,6 +313,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                 String_Const_u8 description = {};
                 Fda0_Coded_Description code = {};
                 
+                
                 switch (note->note_kind)
                 {
                     case CodeIndexNote_Type:
@@ -318,7 +325,9 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                     
                     case CodeIndexNote_Function:
                     {
+                        code = Fda0_CodedDesc_Function;
                         String_Const_u8 arguments_string = {};
+                        
                         if(token_array.tokens != 0)
                         {
                             Range_i64 function_range = note->pos;
@@ -335,30 +344,43 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                 else if (token->kind == TokenBaseKind_ParentheticalClose)
                                 {
                                     function_range.max = token->pos + token->size;
-                                    arguments_string = fda0_push_buffer_range_plus_hidden_one(app, scratch, buffer, function_range);
+                                    
+                                    // NOTE(fda0): Allocate 3 bytes more for "{}" + code
+                                    arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer, function_range, 3);
                                     
                                     token_it_inc_non_whitespace(&it);
                                     token = token_it_read(&it);
-                                    code = Fda0_CodedDesc_FunctionDeclaration;
-                                    
-                                    if (token->kind == TokenBaseKind_ScopeOpen)
-                                    {
-                                        code = Fda0_CodedDesc_Function;
-                                    }
                                     
                                     if (arguments_string.size)
                                     {
+                                        if (token->kind == TokenBaseKind_ScopeOpen)
+                                        {
+                                            arguments_string.str[arguments_string.size - 3] = '{';
+                                            arguments_string.str[arguments_string.size - 2] = '}';
+                                        }
+                                        else
+                                        {
+                                            code = Fda0_CodedDesc_Forward;
+                                            arguments_string.str[arguments_string.size - 3] = ';';
+                                            --arguments_string.size;
+                                        }
+                                        
+                                        --arguments_string.size;
                                         fda0_trim_string_to_single_spaces_in_place(&arguments_string);
-                                        fda0_add_coded_description(&arguments_string, code);
+                                        ++arguments_string.size;
+                                        arguments_string.str[arguments_string.size-1] = code;
+                                        
+                                        description = arguments_string; 
+                                    }
+                                    else
+                                    {
+                                        description = str_func; 
                                     }
                                     
                                     break;
                                 }
                             }
                         }
-                        
-                        if (arguments_string.size) { description = arguments_string; }
-                        else { description = str_func; }
                         
                     } break;
                     
@@ -392,6 +414,18 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
          item;
          item = item->next)
     {
+        if (item->code == Fda0_CodedDesc_Function ||
+            item->code == Fda0_CodedDesc_Forward)
+        {
+            char code_char = (char)item->code == Fda0_CodedDesc_Function;
+            
+            item->primary = push_stringf(scratch, "%.*s %.*s",
+                                         item->primary.size, (char *)item->primary.str, 
+                                         item->description.size-1, (char *)item->description.str,
+                                         code_char);
+        }
+        
+        
         lister_add_item(lister, item->primary, item->description, item->jump, 0);
     }
     
@@ -418,7 +452,8 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
 
 
 
-//~ NOTE(fda0): Custom lister render - with added custom colors that are coded in at the end of node->status
+//~ NOTE(fda0): Custom lister render - modified at the end
+// It decodes color info hidden in node->status
 function void
 fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
 {
@@ -542,7 +577,7 @@ fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
     y_pos += first_index*block_height;
     
     //
-    // NOTE(fda0): Bugfix for default 4coder lister_render
+    // NOTE(fda0): Bugfix for default lister_render in 4coder 4.1.7
     //
     i32 max_count = first_index + lister->visible_count + 6;
     count = clamp_top(lister->filtered.count, max_count);
@@ -591,25 +626,36 @@ fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
         switch (decode.code)
         {
             case Fda0_CodedDesc_Type: {
-                color_primary = fcolor_id(defcolor_type);
+                color_primary = fcolor_id(Fda0_Color_Type);
             } break;
             
             case Fda0_CodedDesc_Function: {
-                color_primary = fcolor_id(defcolor_function);
+                color_primary = fcolor_id(Fda0_Color_Function);
                 color_secondary = fcolor_id(defcolor_text_default);
             } break;
             
-            case Fda0_CodedDesc_FunctionDeclaration: {
-                color_primary = fcolor_id(defcolor_declaration);
+            case Fda0_CodedDesc_Forward: {
+                color_primary = fcolor_id(Fda0_Color_Fordward_Declaration);
                 color_secondary = fcolor_id(defcolor_comment);
             } break;
             
             case Fda0_CodedDesc_Macro: {
-                color_primary = fcolor_id(defcolor_macro);
+                color_primary = fcolor_id(Fda0_Color_Macro);
             } break;
         }
         
-        push_fancy_string(scratch, &line, color_primary, node->string);
+        
+        String_Const_u8 primary = node->string;
+        
+        if (decode.code == Fda0_CodedDesc_Function ||
+            decode.code == Fda0_CodedDesc_Forward)
+        {
+            i64 split_pos = (i64)string_find_first(node->string, 0, ' ');
+            primary.size = split_pos;
+        }
+        
+        
+        push_fancy_string(scratch, &line, color_primary, primary);
         push_fancy_stringf(scratch, &line, " ");
         push_fancy_string(scratch, &line, color_secondary, decode.string);
         

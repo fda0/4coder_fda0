@@ -1,48 +1,9 @@
 
 
-
-//~ NOTE(fda0): Custom commands.
-
-
-void set_current_mapid(Application_Links* app, Command_Map_ID mapid)
+CUSTOM_COMMAND_SIG(fda0_noop)
+CUSTOM_DOC("Do nothing")
 {
-    // NOTE(mg): Function from https://4coder.handmade.network/wiki/7319-customization_layer_-_getting_started__4coder_4.1_
-    
-    View_ID view = get_active_view(app, 0);
-    Buffer_ID buffer = view_get_buffer(app, view, 0);
-    Managed_Scope scope = buffer_get_managed_scope(app, buffer);
-    Command_Map_ID *map_id_ptr = scope_attachment(app, scope, buffer_map_id, Command_Map_ID);
-    
-    *map_id_ptr = mapid;
 }
-
-CUSTOM_COMMAND_SIG(fda0_toggle_editor_mode)
-CUSTOM_DOC("Switch between editor modes (text/command)")
-{
-    fda0_command_mode = !fda0_command_mode;
-    
-    if (fda0_command_mode) { set_current_mapid(app, fda0_command_map_id); }
-    else                   { set_current_mapid(app, fda0_code_map_id); }
-}
-
-CUSTOM_COMMAND_SIG(fda0_enter_command_mode)
-CUSTOM_DOC("Switch editor to command mode")
-{
-    fda0_command_mode = true;
-    set_current_mapid(app, fda0_command_map_id);
-}
-
-CUSTOM_COMMAND_SIG(fda0_enter_input_mode)
-CUSTOM_DOC("Switch editor to text input mode")
-{
-    fda0_command_mode = false;
-    set_current_mapid(app, fda0_code_map_id);
-}
-
-
-
-
-
 
 
 CUSTOM_COMMAND_SIG(fda0_insert_tilde)
@@ -93,37 +54,3 @@ CUSTOM_DOC("Scroll the screen down")
     scroll.target = view_move_buffer_point(app, view, scroll.target, V2f32(0.f, move_dist));
     view_set_buffer_scroll(app, view, scroll, SetBufferScroll_SnapCursorIntoView);
 }
-
-CUSTOM_COMMAND_SIG(fda0_toggle_function_helper)
-CUSTOM_DOC("Toggle function helper (helps with function arguments)")
-{
-    fda0_function_helper = !fda0_function_helper;
-}
-
-
-
-#if 1
-CUSTOM_COMMAND_SIG(fda0_debug_print)
-CUSTOM_DOC("Print current _debug_ value")
-{
-    i64 current_map_id = -69;
-    {    
-        View_ID view = get_active_view(app, 0);
-        Buffer_ID buffer = view_get_buffer(app, view, 0);
-        Managed_Scope scope = buffer_get_managed_scope(app, buffer);
-        Command_Map_ID *map_id_ptr = scope_attachment(app, scope, buffer_map_id, Command_Map_ID);
-        current_map_id = *map_id_ptr;
-    }
-    
-    char buffer[256]; // TODO(fda0): Use push_stringf(...)
-    auto len = snprintf(buffer, sizeof(buffer), 
-                        "[keys] code: %lld, comamnd: %lld, current: %lld",
-                        fda0_code_map_id, fda0_command_map_id, current_map_id);
-    
-    String_Const_u8 string;
-    string.str = (u8 *)buffer;
-    string.size = clamp(0, len, sizeof(buffer));
-    write_string(app, string);
-}
-#endif
-
