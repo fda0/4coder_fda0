@@ -333,53 +333,69 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                             Range_i64 function_range = note->pos;
                             Token_Iterator_Array it = token_iterator_pos(0, &token_array, function_range.min);
                             
+                            i64 paren_depth = 0;
+                            
+                            
                             for (;token_it_inc_non_whitespace(&it);)
                             {
                                 Token *token = token_it_read(&it);
                                 
                                 if(token->kind == TokenBaseKind_ParentheticalOpen)
                                 {
-                                    function_range.min = token->pos;
+                                    if (paren_depth == 0)
+                                    {
+                                        function_range.min = token->pos;
+                                    }
+                                    
+                                    ++paren_depth;
                                 }
                                 else if (token->kind == TokenBaseKind_ParentheticalClose)
                                 {
-                                    function_range.max = token->pos + token->size;
+                                    --paren_depth;
                                     
-                                    // NOTE(fda0): Allocate 3 bytes more for "{}" + code
-                                    arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer, function_range, 3);
-                                    
-                                    token_it_inc_non_whitespace(&it);
-                                    token = token_it_read(&it);
-                                    
-                                    if (arguments_string.size)
+                                    if (paren_depth == 0)
                                     {
-                                        if (token->kind == TokenBaseKind_ScopeOpen)
+                                        function_range.max = token->pos + token->size;
+                                        
+                                        // NOTE(fda0): Allocate 3 bytes more for "{}" + code
+                                        arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer, function_range, 3);
+                                        
+                                        token_it_inc_non_whitespace(&it);
+                                        token = token_it_read(&it);
+                                        
+                                        if (arguments_string.size)
                                         {
-                                            arguments_string.str[arguments_string.size - 3] = '{';
-                                            arguments_string.str[arguments_string.size - 2] = '}';
-                                        }
-                                        else
-                                        {
-                                            code = Fda0_CodedDesc_Forward;
-                                            arguments_string.str[arguments_string.size - 3] = ';';
+                                            if (token->kind == TokenBaseKind_ScopeOpen)
+                                            {
+                                                arguments_string.str[arguments_string.size - 3] = '{';
+                                                arguments_string.str[arguments_string.size - 2] = '}';
+                                            }
+                                            else
+                                            {
+                                                code = Fda0_CodedDesc_Forward;
+                                                arguments_string.str[arguments_string.size - 3] = ';';
+                                                --arguments_string.size;
+                                            }
+                                            
                                             --arguments_string.size;
+                                            fda0_trim_string_to_single_spaces_in_place(&arguments_string);
+                                            ++arguments_string.size;
+                                            arguments_string.str[arguments_string.size-1] = code;
                                         }
                                         
-                                        --arguments_string.size;
-                                        fda0_trim_string_to_single_spaces_in_place(&arguments_string);
-                                        ++arguments_string.size;
-                                        arguments_string.str[arguments_string.size-1] = code;
-                                        
-                                        description = arguments_string; 
+                                        break;
                                     }
-                                    else
-                                    {
-                                        description = str_func; 
-                                    }
-                                    
-                                    break;
                                 }
                             }
+                        }
+                        
+                        if (arguments_string.size > 0)
+                        {
+                            description = arguments_string; 
+                        }
+                        else
+                        {
+                            description = str_func; 
                         }
                         
                     } break;
