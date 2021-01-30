@@ -29,7 +29,7 @@ enable_undo_fade_out = true;
 // the cursor and mark's roundness as a percentage of their width
 // (At 50 the left and right corners will be so round they form a semi-circle,
 //  hence 50 is the max)
-cursor_roundness = 20;
+cursor_roundness = 35;
 
 // mark_thickness is a pixel count value setting the
 // thickness of the mark wire box in original mode
@@ -85,3 +85,10 @@ default_flags_bat = "-FC -GR- -EHa- -nologo -Zi";
 default_compiler_sh = "g++";
 default_flags_sh  = "-g";
 
+
+
+
+highlight_line_at_cursor = true;
+
+// fleury settings:
+f4_poscontext_draw_at_bottom_of_buffer = true;
