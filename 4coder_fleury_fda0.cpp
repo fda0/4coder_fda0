@@ -1,4 +1,5 @@
 
+
 // TODO(fda0): Delete/rename it in the future?
 CUSTOM_ID(colors, defcolor_type);
 CUSTOM_ID(colors, defcolor_function);
@@ -13,4 +14,5 @@ CUSTOM_ID(colors, defcolor_declaration);
 
 
 #define Fda0_Insert_Code_In_custom_layer_init() \
-    casey_switch_to_keybinding_0(app);
+casey_switch_to_keybinding_0(app);
+

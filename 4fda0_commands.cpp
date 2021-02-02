@@ -54,3 +54,34 @@ CUSTOM_DOC("Scroll the screen down")
     scroll.target = view_move_buffer_point(app, view, scroll.target, V2f32(0.f, move_dist));
     view_set_buffer_scroll(app, view, scroll, SetBufferScroll_SnapCursorIntoView);
 }
+
+
+CUSTOM_COMMAND_SIG(fda0_lister_goto_position)
+CUSTOM_DOC("If the buffer in the active view is writable, inserts a character, otherwise performs goto_jump_at_cursor.")
+{
+    View_ID view = get_active_view(app, Access_ReadVisible);
+    Buffer_ID buffer = view_get_buffer(app, view, Access_ReadWriteVisible);
+    if (buffer == 0){
+        buffer = view_get_buffer(app, view, Access_ReadVisible);
+        if (buffer != 0){
+            goto_jump_at_cursor(app);
+            lock_jump_buffer(app, buffer);
+        }
+    }
+}
+
+CUSTOM_COMMAND_SIG(fda0_lister_goto_position_same_panel)
+CUSTOM_DOC("If the buffer in the active view is writable, inserts a character, otherwise performs goto_jump_at_cursor_same_panel.")
+{
+    View_ID view = get_active_view(app, Access_ReadVisible);
+    Buffer_ID buffer = view_get_buffer(app, view, Access_ReadWriteVisible);
+    if (buffer == 0){
+        buffer = view_get_buffer(app, view, Access_ReadVisible);
+        if (buffer != 0){
+            goto_jump_at_cursor_same_panel(app);
+            lock_jump_buffer(app, buffer);
+        }
+    }
+}
+
+
