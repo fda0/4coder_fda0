@@ -358,7 +358,8 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                         function_range.max = token->pos + token->size;
                                         
                                         // NOTE(fda0): Allocate 3 bytes more for "{}" + code
-                                        arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer, function_range, 3);
+                                        arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer,
+                                                                                                   function_range, 3);
                                         
                                         token_it_inc_non_whitespace(&it);
                                         token = token_it_read(&it);

@@ -2,14 +2,14 @@
 keys_global = {
     // Row 0
     { "casey_switch_to_keybinding_0", "Escape" },
-    
+
     { "toggle_mouse",                      "F1", "Alt" },
-    
+
     { "project_fkey_command", "F2" },
     { "project_fkey_command", "F3" },
     { "project_fkey_command", "F4" },
     { "exit_4coder",          "F4", "Alt" },
-    
+
     { "project_fkey_command", "F5" },
     { "project_fkey_command", "F6" },
     { "project_fkey_command", "F7" },
@@ -23,82 +23,83 @@ keys_global = {
     { "project_fkey_command", "F14" },
     { "project_fkey_command", "F15" },
     { "project_fkey_command", "F16" },
-    
-    
+
+
     // Row 1
     { "fda0_center_view_around_top", "Insert" },
     { "center_view",                 "Insert", "Shift" },
-    
+
     // Row 2
     { "change_active_panel",           "1", "Control" }, // +C
     { "change_active_panel_backwards", "1", "Control", "Shift" }, // +C
     { "change_to_build_panel",         "Minus", "Control" }, // +C
-    
-    
+
+
     // Row 3
     { "open_in_other",             "O", "Alt" },
     { "interactive_open_or_new",   "O", "Control" }, // +C
-    
-    
+
+
     // Row 4
     { "save_all_dirty_buffers",    "S", "Shift", "Control" },
-    
+
     { "load_theme_current_buffer", "L", "Control", "Shift" },
-    
-    
+
+
     // Row 5
     { "command_lister",                "B", "Control" }, // +C
     { "interactive_new",               "N", "Control" }
-    
+
 };
 
 
-keys_file = {
 
+keys_file = {
 	// ========================SHARED PART===================================
     // Row 0
     { "keyboard_macro_finish_recording", "ScrollLock" },
     { "keyboard_macro_start_recording",  "ScrollLock", "Shift" },
     { "keyboard_macro_replay",           "Pause" },
-    
-    
+
+
     // Row 1
-    { "f4_home", "Home" },
-    { "page_up",                "PageUp" },
-    { "goto_beginning_of_file", "PageUp", "Control" },
-    
-    
+    { "f4_home_first_non_whitespace", "Home" },
+    { "page_up",                      "PageUp" },
+    { "goto_beginning_of_file",       "PageUp", "Control" },
+
+
     // Row 2
     { "seek_end_of_line",       "End" },
     { "page_down",              "PageDown" },
     { "goto_end_of_file",       "PageDown", "Control" },
-    
-    
+
+
     // Row 3
-    { "save", "S", "Control" },
-    
-    { "if_read_only_goto_position",            "Return" },
+    { "save",                                  "S", "Control" },
+    { "casey_clean_file_and_save",             "S", "Control", "Alt" },
+
+    { "casey_newline_and_indent",              "Return" },
     { "if_read_only_goto_position_same_panel", "Return", "Shift" },
-    
-    
+
+
     // Row 4
-    { "move_up",                   "Up" },
+    { "fda0_move_up",              "Up" },
     { "move_line_up",              "Up", "Alt" },
     { "move_up_to_blank_line_end", "Up", "Shift" },
     { "fda0_scroll_up",            "Up", "Control" },
-    
-    
+
+
     // Row 5
     { "move_left",                                     "Left" },
     { "move_left_alpha_numeric_or_camel_boundary",     "Left", "Alt" },
     { "f4_move_left_token_boundary",                   "Left", "Control" },
     { "move_left_whitespace_boundary",                 "Left", "Shift" },
-    
-    { "move_down",                                     "Down" },
+
+    { "fda0_move_down",                                "Down" },
     { "move_line_down",                                "Down", "Alt" },
     { "move_down_to_blank_line_end",                   "Down", "Shift" },
-    
-    { "move_right",                                    "Right" },
+
+    { "fda0_move_right",                               "Right" },
     { "move_right_alpha_numeric_or_camel_boundary",    "Right", "Alt" },
     { "f4_move_right_token_boundary",                  "Right", "Control" },
     { "move_right_whitespace_boundary",                "Right", "Shift" },
@@ -111,30 +112,31 @@ keys_file = {
     // Row 1
     { "casey_switch_to_keybinding_1",                "Tick" },
     { "fda0_insert_tilde",                           "Tick", "Shift" },
-    
-    { "backspace_char",                               "Backspace" },
+
+    { "fda0_backspace",                               "Backspace" },
+    { "backspace_char",                               "Backspace", "Shift" },
     { "f4_backspace_alpha_numeric_or_camel_boundary", "Backspace", "Alt" },
     { "f4_backspace_token_boundary",                  "Backspace", "Control" },
-    
-    
+
+
     // Row 2
-    { "f4_autocomplete_or_indent",                   "Tab" },
-    { "f4_unindent",                                 "Tab", "Shift" },
+    { "word_complete",                               "Tab" },
+    { "word_complete_drop_down",                     "Tab", "Shift" },
     { "word_complete_drop_down",                     "Tab", "Control" },
-    
+
     { "write_todo",                                  "T", "Alt" },
-    
+
     { "delete_char",                                 "Delete" },
     { "f4_delete_alpha_numeric_or_camel_boundary",   "Delete", "Alt" },
     { "f4_delete_token_boundary",                    "Delete", "Control" },
-    
-    
+
+
     // Row 3
 
-    
+
     // Row 4
     { "write_note",        "N", "Alt" },
-    
+
     { "fda0_insert_arrow", "Period", "Alt" },
 };
 
@@ -166,15 +168,17 @@ keys_file_1 = {
     { "change_to_build_panel",         "Minus", },
     { "f4_toggle_compilation_expand", "Equal" },
     { "fda0_noop", "Backspace" },
-    
+
 
 
     // Row 3
-    { "word_complete_drop_down",                "Tab" },
+    { "fda0_noop",                              "Tab" },
     { "f4_toggle_enclosure_side",               "Q" },
     { "f4_go_to_definition_same_panel",         "W" },
-    { "f4_search_for_definition__project_wide", "W", "Shift" },
+    { "list_all_locations_of_identifier",       "W", "Shift" },
     { "jump_to_last_point",                     "W", "Alt" },
+    { "fda0_auto_indent_line_at_cursor",             "E" },
+    { "auto_indent_range",                      "E", "Shift" },
     { "query_replace",                          "R" },
     { "query_replace_identifier",               "R", "Shift" },
     { "fda0_jump_to_definition", "T" },
@@ -188,9 +192,10 @@ keys_file_1 = {
     { "select_surrounding_scope",         "LeftBracket" },
     { "place_in_scope",                   "RightBracket" },
     { "fda0_noop", "BackwardSlash" },
-    
-    
-    
+    { "casey_delete_to_end_of_line", "Delete" },
+
+
+
     // Row 4
     { "cursor_mark_swap",                              "A" },
     { "save",                                          "S" },
@@ -205,8 +210,9 @@ keys_file_1 = {
     { "duplicate_line",                                "L" },
     { "fda0_noop", "Semicolon" },
     { "fda0_noop", "Quote" },
+    { "fda0_lister_goto_position_same_panel",          "Return" },
+    { "fda0_lister_goto_position",                     "Return", "Shift" },
 
-    
     // Row 5
     { "undo",                  "Z" },
     { "cut",                   "X" },
@@ -219,8 +225,8 @@ keys_file_1 = {
     { "fda0_noop", "Comma" },
     { "fda0_noop", "Period" },
     { "comment_line_toggle",   "ForwardSlash" },
-    
-    
+
+
     // Row 6
     { "set_mark", "Space" },
 };

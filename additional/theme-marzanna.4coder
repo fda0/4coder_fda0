@@ -71,7 +71,7 @@ fleury_color_index_comment_tag = defcolor_str_constant;
 fleury_color_cursor_macro = 0xFFf0aaff;
 fleury_color_cursor_power_mode = {0xFFffff00, 0xFF00ffff}; // cycle doesn't work here
 fleury_color_plot_cycle = {0xFFff4444, 0xFFffff44, 0xFF44ff44, 0xFF44ffff, 0xFF4444ff};
-fleury_color_token_highlight = defcolor_pop1;
+fleury_color_token_highlight = 0xAA16fe75;
+fleury_color_comment_user_name = 0xFFf1e1f1;
 
-
-
+f0_color_background_token_highlight = 0xAA26ae95;
