@@ -26,7 +26,7 @@ keys_global = {
 
 
     // Row 1
-    { "fda0_center_view_around_top", "Insert" },
+    { "f0_center_view_around_top", "Insert" },
     { "center_view",                 "Insert", "Shift" },
 
     // Row 2
@@ -83,10 +83,10 @@ keys_file = {
 
 
     // Row 4
-    { "fda0_move_up",              "Up" },
+    { "f0_move_up_like_virtual",   "Up" },
     { "move_line_up",              "Up", "Alt" },
     { "move_up_to_blank_line_end", "Up", "Shift" },
-    { "fda0_scroll_up",            "Up", "Control" },
+    { "f0_scroll_up",              "Up", "Control" },
 
 
     // Row 5
@@ -95,25 +95,26 @@ keys_file = {
     { "f4_move_left_token_boundary",                   "Left", "Control" },
     { "move_left_whitespace_boundary",                 "Left", "Shift" },
 
-    { "fda0_move_down",                                "Down" },
+    { "f0_move_down_like_virtual",                     "Down" },
     { "move_line_down",                                "Down", "Alt" },
     { "move_down_to_blank_line_end",                   "Down", "Shift" },
 
-    { "fda0_move_right",                               "Right" },
+    { "f0_move_right_like_virtual",                    "Right" },
     { "move_right_alpha_numeric_or_camel_boundary",    "Right", "Alt" },
     { "f4_move_right_token_boundary",                  "Right", "Control" },
     { "move_right_whitespace_boundary",                "Right", "Shift" },
-    { "fda0_scroll_down",                              "Down", "Control" },
+    { "f0_scroll_down",                              "Down", "Control" },
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~END OF SHARED PART~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
 
     // Row 1
-    { "casey_switch_to_keybinding_1",                "Tick" },
-    { "fda0_insert_tilde",                           "Tick", "Shift" },
+    { "casey_switch_to_keybinding_1",                 "Tick" },
+    { "f0_insert_tilde",                              "Tick", "Shift" },
+    { "f0_insert_tick",                               "Tick", "Alt" },
 
-    { "fda0_backspace",                               "Backspace" },
+    { "f0_backspace_like_virtual",                                 "Backspace" },
     { "backspace_char",                               "Backspace", "Shift" },
     { "f4_backspace_alpha_numeric_or_camel_boundary", "Backspace", "Alt" },
     { "f4_backspace_token_boundary",                  "Backspace", "Control" },
@@ -137,7 +138,7 @@ keys_file = {
     // Row 4
     { "write_note",        "N", "Alt" },
 
-    { "fda0_insert_arrow", "Period", "Alt" },
+    { "f0_insert_arrow", "Period", "Alt" },
 };
 
 
@@ -161,37 +162,37 @@ keys_file_1 = {
     { "open_panel_hsplit",             "4", "Alt" },
     { "open_matching_file_cpp",        "5" },
     { "open_file_in_quotes",           "6" }, // TODO(mg): share with W key maybe in future
-    { "fda0_noop", "7" },
-    { "fda0_noop", "8" },
-    { "fda0_noop", "9" },
+    { "f0_noop", "7" },
+    { "f0_noop", "8" },
+    { "f0_noop", "9" },
     { "f4_switch_syntax_option",       "0" },
     { "change_to_build_panel",         "Minus", },
     { "f4_toggle_compilation_expand", "Equal" },
-    { "fda0_noop", "Backspace" },
+    { "f0_noop", "Backspace" },
 
 
 
     // Row 3
-    { "fda0_noop",                              "Tab" },
+    { "f0_noop",                              "Tab" },
     { "f4_toggle_enclosure_side",               "Q" },
     { "f4_go_to_definition_same_panel",         "W" },
     { "list_all_locations_of_identifier",       "W", "Shift" },
     { "jump_to_last_point",                     "W", "Alt" },
-    { "fda0_auto_indent_line_at_cursor",             "E" },
+    { "f0_auto_indent_two_lines_at_cursor",             "E" },
     { "auto_indent_range",                      "E", "Shift" },
     { "query_replace",                          "R" },
     { "query_replace_identifier",               "R", "Shift" },
-    { "fda0_jump_to_definition", "T" },
+    { "f0_jump_to_definition", "T" },
     { "f4_search_for_definition__project_wide", "T", "Shift" },
     { "f4_search_for_definition__current_file", "T", "Alt" },
     { "redo",                                   "Y" },
-    { "fda0_noop", "U" },
+    { "f0_noop", "U" },
     { "interactive_switch_buffer",        "I" },
     { "interactive_open_or_new",          "O" },
     { "if0_off",                          "P" },
     { "select_surrounding_scope",         "LeftBracket" },
     { "place_in_scope",                   "RightBracket" },
-    { "fda0_noop", "BackwardSlash" },
+    { "f0_noop", "BackwardSlash" },
     { "casey_delete_to_end_of_line", "Delete" },
 
 
@@ -205,13 +206,13 @@ keys_file_1 = {
     { "list_all_substring_locations_case_insensitive", "F", "Shift" },
     { "goto_line",                                     "G" },
     { "replace_in_range",                              "H" },
-    { "fda0_noop", "J" },
+    { "f0_noop", "J" },
     { "delete_line",                                   "K" },
     { "duplicate_line",                                "L" },
-    { "fda0_noop", "Semicolon" },
-    { "fda0_noop", "Quote" },
-    { "fda0_lister_goto_position_same_panel",          "Return" },
-    { "fda0_lister_goto_position",                     "Return", "Shift" },
+    { "f0_noop", "Semicolon" },
+    { "f0_noop", "Quote" },
+    { "f0_lister_goto_position_same_panel",          "Return", "Shift" },
+    { "f0_lister_goto_position",                     "Return" },
 
     // Row 5
     { "undo",                  "Z" },
@@ -221,9 +222,9 @@ keys_file_1 = {
     { "command_lister",        "B" },
     { "goto_next_jump",        "N" },
     { "goto_prev_jump",        "N", "Shift" },
-    { "fda0_noop", "M" },
-    { "fda0_noop", "Comma" },
-    { "fda0_noop", "Period" },
+    { "f0_noop", "M" },
+    { "f0_noop", "Comma" },
+    { "f0_noop", "Period" },
     { "comment_line_toggle",   "ForwardSlash" },
 
 

@@ -19,13 +19,13 @@
 
 //~ NOTE(fda0): Forward declarations
 function Lister_Result run_lister_with_custom_render(Application_Links *app, Lister *lister, Render_Caller_Function *custom_render_caller);
-function void fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view);
+function void f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view);
 
 
 
 //~ NOTE(fda0): Helper functions
 internal void
-fda0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
+f0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
 {
     b32 was_space = true;
     u64 dest_index = 0;
@@ -91,7 +91,7 @@ struct Fda0_Decode_Result
 };
 
 inline Fda0_Decode_Result
-fda0_decode_description(String_Const_u8 string)
+f0_decode_description(String_Const_u8 string)
 {
     Fda0_Decode_Result result = {};
     result.string = string;
@@ -107,7 +107,7 @@ fda0_decode_description(String_Const_u8 string)
 }
 
 function String_Const_u8
-fda0_push_buffer_range_plus_bonus_space(Application_Links *app, Arena *arena, Buffer_ID buffer, Range_i64 range,
+f0_push_buffer_range_plus_bonus_space(Application_Links *app, Arena *arena, Buffer_ID buffer, Range_i64 range,
                                         i64 bonus_spaces_count){
     String_Const_u8 result = {};
     i64 length = range_size(range);
@@ -140,7 +140,7 @@ struct Fda0_Lister_Item
 };
 
 inline Fda0_Lister_Item *
-fda0_push_lister_item(Arena *arena, Fda0_Lister_Item *tail,
+f0_push_lister_item(Arena *arena, Fda0_Lister_Item *tail,
                       String_Const_u8 primary, String_Const_u8 description, Tiny_Jump *jump, Fda0_Coded_Description code)
 {
     Fda0_Lister_Item *new_item = push_array(arena, Fda0_Lister_Item, 1);
@@ -166,7 +166,7 @@ struct Fda0_Li_Split_Result
 };
 
 internal Fda0_Li_Split_Result
-fda0_li_split(Fda0_Lister_Item* source)
+f0_li_split(Fda0_Lister_Item* source)
 {
     // NOTE(fda0): Taken and modified from: https://www.geeksforgeeks.org/merge-sort-for-linked-list/
     // NOTE(fda0): I have heavy suspicion that tracking lengths/indexes would be faster
@@ -197,7 +197,7 @@ fda0_li_split(Fda0_Lister_Item* source)
 
 
 internal Fda0_Lister_Item *
-fda0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
+f0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
 {
     // NOTE(fda0): Taken and modified from: https://www.geeksforgeeks.org/merge-sort-for-linked-list/
     
@@ -243,12 +243,12 @@ fda0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
     if (a_goes_first)
     {
         result = a;
-        result->next = fda0_li_sorted_merge(a->next, b);
+        result->next = f0_li_sorted_merge(a->next, b);
     }
     else
     {
         result = b;
-        result->next = fda0_li_sorted_merge(a, b->next);
+        result->next = f0_li_sorted_merge(a, b->next);
     }
     
     return result;
@@ -256,24 +256,24 @@ fda0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
 
 
 internal void
-fda0_li_merge_sort(Fda0_Lister_Item **head_ptr)
+f0_li_merge_sort(Fda0_Lister_Item **head_ptr)
 {
     Fda0_Lister_Item *head = *head_ptr;
     if (head == nullptr || head->next == nullptr) { return; }
     
     
-    Fda0_Li_Split_Result split = fda0_li_split(head);
-    fda0_li_merge_sort(&split.a);
-    fda0_li_merge_sort(&split.b);
+    Fda0_Li_Split_Result split = f0_li_split(head);
+    f0_li_merge_sort(&split.a);
+    f0_li_merge_sort(&split.b);
     
     
-    *head_ptr = fda0_li_sorted_merge(split.a, split.b);
+    *head_ptr = f0_li_sorted_merge(split.a, split.b);
 }
 
 
 
 //~ NOTE(fda0): The main dish
-CUSTOM_UI_COMMAND_SIG(fda0_jump_to_definition)
+CUSTOM_UI_COMMAND_SIG(f0_jump_to_definition)
 CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to one.")
 {
     Scratch_Block scratch(app);
@@ -358,7 +358,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                         function_range.max = token->pos + token->size;
                                         
                                         // NOTE(fda0): Allocate 3 bytes more for "{}" + code
-                                        arguments_string = fda0_push_buffer_range_plus_bonus_space(app, scratch, buffer,
+                                        arguments_string = f0_push_buffer_range_plus_bonus_space(app, scratch, buffer,
                                                                                                    function_range, 3);
                                         
                                         token_it_inc_non_whitespace(&it);
@@ -379,7 +379,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                             }
                                             
                                             --arguments_string.size;
-                                            fda0_trim_string_to_single_spaces_in_place(&arguments_string);
+                                            f0_trim_string_to_single_spaces_in_place(&arguments_string);
                                             ++arguments_string.size;
                                             arguments_string.str[arguments_string.size-1] = code;
                                         }
@@ -410,7 +410,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                 }
                 
                 
-                tail = fda0_push_lister_item(scratch, tail, note->text, description, jump, code);
+                tail = f0_push_lister_item(scratch, tail, note->text, description, jump, code);
                 if (head == nullptr)
                 {
                     head = tail;
@@ -423,7 +423,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
     
     
     // NOTE(fda0): Merge sort
-    fda0_li_merge_sort(&head);
+    f0_li_merge_sort(&head);
     
     
     // NOTE(fda0): Add items to lister
@@ -449,7 +449,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
     
     
     // NOTE(fda0): Run lister
-    Lister_Result l_result = run_lister_with_custom_render(app, lister, fda0_lister_render);
+    Lister_Result l_result = run_lister_with_custom_render(app, lister, f0_lister_render);
     Tiny_Jump result = {};
     if (!l_result.canceled && l_result.user_data != 0)
     {
@@ -472,7 +472,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
 //~ NOTE(fda0): Custom lister render - modified at the end
 // It decodes color info hidden in node->status
 function void
-fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
+f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
 {
     Scratch_Block scratch(app);
     
@@ -639,7 +639,7 @@ fda0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
         FColor color_primary = fcolor_id(defcolor_text_default);
         FColor color_secondary = fcolor_id(defcolor_pop2);
         
-        Fda0_Decode_Result decode = fda0_decode_description(node->status);
+        Fda0_Decode_Result decode = f0_decode_description(node->status);
         switch (decode.code)
         {
             case Fda0_CodedDesc_Type: {
