@@ -1,6 +1,6 @@
 
 function void
-f0_move_past_lead_whitespace(Application_Links *app, View_ID view, Buffer_ID buffer)
+f0_move_past_lead_whitespace_like_virtual(Application_Links *app, View_ID view, Buffer_ID buffer)
 {
     i64 pos = view_get_cursor_pos(app, view);
     i64 new_pos = get_pos_past_lead_whitespace(app, buffer, pos);
@@ -18,7 +18,7 @@ CUSTOM_DOC("Moves the cursor one character to the right. Skips leading whitespac
     no_mark_snap_to_cursor_if_shift(app, view);
     
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
-    f0_move_past_lead_whitespace(app, view, buffer);
+    f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
 }
 
 CUSTOM_COMMAND_SIG(f0_move_up_like_virtual)
@@ -28,7 +28,7 @@ CUSTOM_DOC("Moves the cursor up one line. Skips leading whitespace.")
     
     View_ID view = get_active_view(app, Access_ReadVisible);
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
-    f0_move_past_lead_whitespace(app, view, buffer);
+    f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
 }
 
 
@@ -40,7 +40,7 @@ CUSTOM_DOC("Moves the cursor down one line. Skips leading whitespace.")
     
     View_ID view = get_active_view(app, Access_ReadVisible);
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
-    f0_move_past_lead_whitespace(app, view, buffer);
+    f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
 }
 
 
@@ -117,7 +117,7 @@ CUSTOM_DOC("Performs goto_jump_at_cursor.")
         if (buffer != 0){
             goto_jump_at_cursor(app);
             lock_jump_buffer(app, buffer);
-            f0_move_past_lead_whitespace(app, view, buffer);
+            f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
         }
     }
 }
@@ -132,7 +132,7 @@ CUSTOM_DOC("Performs goto_jump_at_cursor_same_panel.")
         if (buffer != 0){
             goto_jump_at_cursor_same_panel(app);
             lock_jump_buffer(app, buffer);
-            f0_move_past_lead_whitespace(app, view, buffer);
+            f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
         }
     }
 }
@@ -199,6 +199,6 @@ CUSTOM_DOC("Auto-indents the line on which the cursor sits and the one above.")
     }
     
     auto_indent_buffer(app, buffer, indent_range);
-    f0_move_past_lead_whitespace(app, view, buffer);
+    f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
 }
 
