@@ -3,10 +3,11 @@ keys_global = {
     // Row 0
     { "casey_switch_to_keybinding_0", "Escape" },
 
-    { "toggle_mouse",                      "F1", "Alt" },
-
+    { "project_fkey_command", "F1" },
     { "project_fkey_command", "F2" },
+    { "theme_lister",         "F2", "Alt" },
     { "project_fkey_command", "F3" },
+    { "toggle_mouse",         "F3", "Alt" },
     { "project_fkey_command", "F4" },
     { "exit_4coder",          "F4", "Alt" },
 
@@ -63,6 +64,8 @@ keys_file = {
 
 
     // Row 1
+    { "reopen", "R", "Control" },
+
     { "f4_home_first_non_whitespace", "Home" },
     { "page_up",                      "PageUp" },
     { "goto_beginning_of_file",       "PageUp", "Control" },
@@ -78,7 +81,7 @@ keys_file = {
     { "save",                                  "S", "Control" },
     { "casey_clean_file_and_save",             "S", "Control", "Alt" },
 
-    { "casey_newline_and_indent",              "Return" },
+    { "casey_newline_and_indent",     "Return" },
     { "if_read_only_goto_position_same_panel", "Return", "Shift" },
 
 
@@ -152,7 +155,7 @@ keys_file_1 = {
     // tick
     { "quick_swap_buffer",             "1" },
     { "interactive_switch_buffer",     "1", "Shift" },
-    { "kill_buffer",                   "1", "Alt)" },
+    { "kill_buffer",                   "1", "Alt" },
     { "change_active_panel",           "2" },
     { "change_active_panel_backwards", "2", "Shift" },
     { "swap_panels",                   "3" },
@@ -161,7 +164,7 @@ keys_file_1 = {
     { "open_panel_vsplit",             "4", "Shift" },
     { "open_panel_hsplit",             "4", "Alt" },
     { "open_matching_file_cpp",        "5" },
-    { "open_file_in_quotes",           "6" }, // TODO(mg): share with W key maybe in future
+    { "open_file_in_quotes",           "6" }, // TODO(f0): share with W key maybe in future
     { "f0_noop", "7" },
     { "f0_noop", "8" },
     { "f0_noop", "9" },
@@ -173,12 +176,12 @@ keys_file_1 = {
 
 
     // Row 3
-    { "f0_noop",                              "Tab" },
+    { "f0_noop",                                "Tab" },
     { "f4_toggle_enclosure_side",               "Q" },
     { "f4_go_to_definition_same_panel",         "W" },
     { "list_all_locations_of_identifier",       "W", "Shift" },
     { "jump_to_last_point",                     "W", "Alt" },
-    { "f0_auto_indent_two_lines_at_cursor",             "E" },
+    { "f0_auto_indent_three_lines_at_cursor",   "E" },
     { "auto_indent_range",                      "E", "Shift" },
     { "query_replace",                          "R" },
     { "query_replace_identifier",               "R", "Shift" },
@@ -210,7 +213,7 @@ keys_file_1 = {
     { "delete_line",                                   "K" },
     { "duplicate_line",                                "L" },
     { "f0_noop", "Semicolon" },
-    { "f0_noop", "Quote" },
+    { "f0_spaces_align",                             "Quote" },
     { "f0_lister_goto_position_same_panel",          "Return", "Shift" },
     { "f0_lister_goto_position",                     "Return" },
 
@@ -226,6 +229,7 @@ keys_file_1 = {
     { "f0_noop", "Comma" },
     { "f0_noop", "Period" },
     { "comment_line_toggle",   "ForwardSlash" },
+    { "f0_banner_wrap_range",  "ForwardSlash", "Shift" },
 
 
     // Row 6

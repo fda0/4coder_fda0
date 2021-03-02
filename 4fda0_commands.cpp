@@ -1,4 +1,21 @@
 
+// TODO(f0): Comamnd_mode: M - add/remove enough spaces to align with mark position
+
+
+
+#if 0
+inline String_Const_u8
+f0_string_advance_str(String_Const_u8 input, u64 distance)
+{
+    distance = clamp_top(distance, input.size);
+    String_Const_u8 result = {};
+    result.str = input.str + distance;
+    result.size = input.size - distance;
+    return result;
+}
+#endif
+
+
 function void
 f0_move_past_lead_whitespace_like_virtual(Application_Links *app, View_ID view, Buffer_ID buffer)
 {
@@ -7,8 +24,190 @@ f0_move_past_lead_whitespace_like_virtual(Application_Links *app, View_ID view, 
     view_set_cursor(app, view, seek_pos(new_pos));
 }
 
-//
+CUSTOM_COMMAND_SIG(f0_spaces_align)
+CUSTOM_DOC("Align to spaces at cursor to mark column.")
+{
+    Scratch_Block scratch(app);
+    
+    View_ID view = get_active_view(app, Access_ReadWriteVisible);
+    Buffer_ID buffer = view_get_buffer(app, view, Access_ReadWriteVisible);
+    
+    i64 cursor_abs_pos = view_get_cursor_pos(app, view);
+    i64 mark_abs_pos = view_get_mark_pos(app, view);
+    
+    i64 cursor_line = get_line_number_from_pos(app, buffer, cursor_abs_pos);
+    i64 mark_line = get_line_number_from_pos(app, buffer, mark_abs_pos);
+    
+    Range_i64 mark_line_range = get_line_pos_range(app, buffer, mark_line);
+    Range_i64 cursor_line_range = get_line_pos_range(app, buffer, cursor_line);
+    
+    i64 mark_col = mark_abs_pos - mark_line_range.min;
+    i64 cursor_col = cursor_abs_pos - cursor_line_range.min;
+    
+    String_Const_u8 cur_line_text = push_buffer_range(app, scratch, buffer, cursor_line_range);
+    Range_i64 spaces_range = {cursor_abs_pos, cursor_abs_pos};
+    
+    
+    // expand selection forward
+    for (u64 i = cursor_col; i < cur_line_text.size; ++i)
+    {
+        u8 t = cur_line_text.str[i];
+        if (t == ' ') spaces_range.max += 1;
+        else break;
+    }
+    
+    // expand selection backwards
+    for (i64 i = cursor_col-1; i >= 0; --i)
+    {
+        u8 t = cur_line_text.str[i];
+        if (t == ' ') spaces_range.min -= 1;
+        else break;
+    }
+    
+    
+    i64 direction = mark_col - (spaces_range.max - cursor_line_range.min);
+    if (direction > 0)
+    {
+        String_Const_u8 new_spaces = string_const_u8_push(scratch, direction);
+        for (u64 i = 0; i < new_spaces.size; ++i)
+        {
+            new_spaces.str[i] = ' ';
+        }
+        
+        Range_i64 cursor_range = {cursor_abs_pos, cursor_abs_pos};
+        buffer_replace_range(app, buffer, cursor_range, new_spaces);
+    }
+    else if (direction < 0)
+    {
+        i64 spaces_len = spaces_range.max - spaces_range.min;
+        i64 target_spaces_len = spaces_len + direction;
+        
+        b32 align_to_line_start = spaces_range.min > cursor_line_range.min;
+        if (target_spaces_len < 1 && align_to_line_start)
+        {
+            target_spaces_len = 1;
+        }
+        else if (target_spaces_len < 0)
+        {
+            target_spaces_len = 0;
+        }
+        
+        String_Const_u8 new_spaces = string_const_u8_push(scratch, target_spaces_len);
+        for (u64 i = 0; i < new_spaces.size; ++i)
+        {
+            new_spaces.str[i] = ' ';
+        }
+        
+        buffer_replace_range(app, buffer, spaces_range, new_spaces);
+        
+        i64 spaces_start_col = (spaces_range.min - cursor_line_range.min);
+        i64 mark_or_start = clamp_bot(spaces_start_col, mark_col);
+        i64 target_col = clamp_top(cursor_col, mark_or_start);
+        
+        i64 move = target_col - spaces_start_col;
+        view_set_cursor_by_character_delta(app, view, move);
+    }
+}
 
+
+
+CUSTOM_COMMAND_SIG(f0_banner_wrap_range)
+CUSTOM_DOC("Adds symetric banner comment === formatting === to range. Works for single lines only.")
+{
+    u8 symbol = '=';
+    i64 symbol_length = 64;
+    Scratch_Block scratch(app);
+    
+    View_ID view = get_active_view(app, Access_ReadWriteVisible);
+    Buffer_ID buffer = view_get_buffer(app, view, Access_ReadWriteVisible);
+    
+    i64 cursor_pos = view_get_cursor_pos(app, view);
+    i64 mark_pos = view_get_mark_pos(app, view);
+    i64 cursor_line = get_line_number_from_pos(app, buffer, cursor_pos);
+    i64 mark_line = get_line_number_from_pos(app, buffer, mark_pos);
+    
+    if (cursor_line == mark_line)
+    {
+        Range_i64 range = {};
+        if (cursor_pos > mark_pos)
+        {
+            range.min = mark_pos;
+            range.max = cursor_pos;
+        }
+        else
+        {
+            range.min = cursor_pos;
+            range.max = mark_pos;
+        }
+        Range_i64 original_range = range;
+        
+        
+        String_Const_u8 full_text = push_buffer_range(app, scratch, buffer, range);
+        b32 found_text = false;
+        u64 skipped_from_left = 0;
+        
+        for (u64 i = 0; i < full_text.size; ++i)
+        {
+            u8 u = full_text.str[i];
+            if (!(character_is_whitespace(u) || u == symbol))
+            {
+                range.min += i;
+                skipped_from_left = i;
+                found_text = true;
+                break;
+            }
+        }
+        
+        if (found_text)
+        {
+            for (u64 i = 0; i < full_text.size; i++)
+            {
+                u8 u = full_text.str[full_text.size - 1 - i];
+                if (!(character_is_whitespace(u) || u == symbol))
+                {
+                    range.max -= i;
+                    break;
+                }
+            }
+            
+            
+            Range_i64 line_range = get_line_pos_range(app, buffer, cursor_line);
+            
+            i64 len = (symbol_length - 2 - (range.min - line_range.min) -
+                       (range.max - range.min) + (range.min - original_range.min));
+            
+            i64 symbols_per_side = len / 2;
+            i64 padding_len = len % 2;
+            
+            if (symbols_per_side > 0)
+            {
+                String_Const_u8 text = push_buffer_range(app, scratch, buffer, range);
+                String_Const_u8 symbols_l = string_const_u8_push(scratch, symbols_per_side);
+                for (u64 i = 0; i < symbols_l.size; ++i)
+                {
+                    symbols_l.str[i] = symbol;
+                }
+                String_Const_u8 symbols_r = symbols_l;
+                symbols_r.size -= 1;
+                
+                String_Const_u8 padding = symbols_l;
+                padding.size = padding_len;
+                
+                String_Const_u8 final_text = push_stringf(scratch, "%.*s %.*s %.*s%.*s",
+                                                          string_expand(symbols_l),
+                                                          string_expand(text),
+                                                          string_expand(padding),
+                                                          string_expand(symbols_r));
+                
+                buffer_replace_range(app, buffer, original_range, final_text);
+                view_set_cursor_by_character_delta(app, view, final_text.size);
+            }
+        }
+    }
+}
+
+
+//
 
 CUSTOM_COMMAND_SIG(f0_move_right_like_virtual)
 CUSTOM_DOC("Moves the cursor one character to the right. Skips leading whitespace.")
@@ -18,7 +217,7 @@ CUSTOM_DOC("Moves the cursor one character to the right. Skips leading whitespac
     no_mark_snap_to_cursor_if_shift(app, view);
     
     Buffer_ID buffer = view_get_buffer(app, view, Access_ReadVisible);
-    f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
+    move_past_lead_whitespace(app, view, buffer);
 }
 
 CUSTOM_COMMAND_SIG(f0_move_up_like_virtual)
@@ -182,7 +381,7 @@ CUSTOM_DOC("Deletes from the end of previous line to cursor if the range contain
 }
 
 
-CUSTOM_COMMAND_SIG(f0_auto_indent_two_lines_at_cursor)
+CUSTOM_COMMAND_SIG(f0_auto_indent_three_lines_at_cursor)
 CUSTOM_DOC("Auto-indents the line on which the cursor sits and the one above.")
 {
     View_ID view = get_active_view(app, Access_ReadWriteVisible);
@@ -191,14 +390,17 @@ CUSTOM_DOC("Auto-indents the line on which the cursor sits and the one above.")
     Range_i64 indent_range = Ii64(pos);
     
     i64 cur_line = get_line_number_from_pos(app, buffer, pos);
-    i64 prev_line = cur_line - 1;
+    i64 prev_line = cur_line - 2;
     if (prev_line > 0)
     {
         Range_i64 prev_line_range = get_line_pos_range(app, buffer, prev_line);
         indent_range.min = prev_line_range.max;
     }
+    else
+    {
+        indent_range.min = 0;
+    }
     
     auto_indent_buffer(app, buffer, indent_range);
     f0_move_past_lead_whitespace_like_virtual(app, view, buffer);
 }
-
