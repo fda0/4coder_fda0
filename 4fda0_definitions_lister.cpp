@@ -1,29 +1,31 @@
 
-//~ NOTE(fda0): This file should be self contained enough to "just work" in 4coder 4.1.7
+//~ NOTE(f0): This file should be self contained enough to "just work" in 4coder 4.1.7
 //
 // Define following macros before including this file to change colors:
-#ifndef Fda0_Color_Type
-#define Fda0_Color_Type defcolor_type
+#ifndef F0_Color_Type
+#    define F0_Color_Type defcolor_type
 #endif
-#ifndef Fda0_Color_Function
-#define Fda0_Color_Function defcolor_function
+#ifndef F0_Color_Function
+#    define F0_Color_Function defcolor_function
 #endif
-#ifndef Fda0_Color_Fordward_Declaration
-#define Fda0_Color_Fordward_Declaration defcolor_declaration
+#ifndef F0_Color_Fordward_Declaration
+#    define F0_Color_Fordward_Declaration defcolor_declaration
 #endif
-#ifndef Fda0_Color_Macro
-#define Fda0_Color_Macro defcolor_macro
+#ifndef F0_Color_Macro
+#    define F0_Color_Macro defcolor_macro
 #endif
 
 
 
-//~ NOTE(fda0): Forward declarations
+//~ Forward declarations
 function Lister_Result run_lister_with_custom_render(Application_Links *app, Lister *lister, Render_Caller_Function *custom_render_caller);
+
 function void f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view);
 
 
 
-//~ NOTE(fda0): Helper functions
+
+//~ Helper functions
 internal void
 f0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
 {
@@ -39,12 +41,9 @@ f0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
         
         if (c <= ' ')
         {
-            if (was_space)
-            {
+            if (was_space) {
                 continue;
-            }
-            else
-            {
+            } else {
                 was_space = true;
                 string->str[source_index] = ' ';
             }
@@ -54,18 +53,14 @@ f0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
             was_space = false;
         }
         
-        
-        if (dest_index != source_index)
-        {
+        if (dest_index != source_index) {
             string->str[dest_index] = string->str[source_index];
         }
-        
         
         ++dest_index;
     }
     
-    if (string->str[dest_index-1] == ' ')
-    {
+    if (string->str[dest_index-1] == ' ') {
         --dest_index;
     }
     
@@ -73,33 +68,33 @@ f0_trim_string_to_single_spaces_in_place(String_Const_u8 *string)
 }
 
 
-enum Fda0_Coded_Description : u8
+enum F0_Coded_Description : u8
 {
-    Fda0_CodedDesc_None,
-    Fda0_CodedDesc_Type,
-    Fda0_CodedDesc_Macro,
-    Fda0_CodedDesc_Function,
-    Fda0_CodedDesc_Forward,
+    F0_CodedDesc_None,
+    F0_CodedDesc_Type,
+    F0_CodedDesc_Macro,
+    F0_CodedDesc_Function,
+    F0_CodedDesc_Forward,
     
-    Fda0_CodedDesc_Count
+    F0_CodedDesc_Count
 };
 
-struct Fda0_Decode_Result
+struct F0_Decode_Result
 {
     String_Const_u8 string;
-    Fda0_Coded_Description code;
+    F0_Coded_Description code;
 };
 
-inline Fda0_Decode_Result
+inline F0_Decode_Result
 f0_decode_description(String_Const_u8 string)
 {
-    Fda0_Decode_Result result = {};
+    F0_Decode_Result result = {};
     result.string = string;
     
     if (string.size > 1 &&
-        string.str[string.size-1] < Fda0_CodedDesc_Count)
+        string.str[string.size-1] < F0_CodedDesc_Count)
     {
-        result.code = (Fda0_Coded_Description)string.str[string.size-1];
+        result.code = (F0_Coded_Description)string.str[string.size-1];
         --result.string.size;
     }
     
@@ -129,23 +124,22 @@ f0_push_buffer_range_plus_bonus_space(Application_Links *app, Arena *arena, Buff
 
 
 
-struct Fda0_Lister_Item
+struct F0_Lister_Item
 {
-    Fda0_Lister_Item *next;
+    F0_Lister_Item *next;
     
     String_Const_u8 primary;
     String_Const_u8 description;
     Tiny_Jump *jump;
-    Fda0_Coded_Description code;
+    F0_Coded_Description code;
 };
 
-inline Fda0_Lister_Item *
-f0_push_lister_item(Arena *arena, Fda0_Lister_Item *tail,
-                      String_Const_u8 primary, String_Const_u8 description, Tiny_Jump *jump, Fda0_Coded_Description code)
+inline F0_Lister_Item *
+f0_push_lister_item(Arena *arena, F0_Lister_Item *tail,
+                      String_Const_u8 primary, String_Const_u8 description, Tiny_Jump *jump, F0_Coded_Description code)
 {
-    Fda0_Lister_Item *new_item = push_array(arena, Fda0_Lister_Item, 1);
-    if (tail)
-    {
+    F0_Lister_Item *new_item = push_array(arena, F0_Lister_Item, 1);
+    if (tail) {
         tail->next = new_item;
     }
     
@@ -159,21 +153,20 @@ f0_push_lister_item(Arena *arena, Fda0_Lister_Item *tail,
 }
 
 
-struct Fda0_Li_Split_Result
+struct F0_Li_Split_Result
 {
-    Fda0_Lister_Item *a;
-    Fda0_Lister_Item *b;
+    F0_Lister_Item *a;
+    F0_Lister_Item *b;
 };
 
-internal Fda0_Li_Split_Result
-f0_li_split(Fda0_Lister_Item* source)
+internal F0_Li_Split_Result
+f0_li_split(F0_Lister_Item* source)
 {
-    // NOTE(fda0): Taken and modified from: https://www.geeksforgeeks.org/merge-sort-for-linked-list/
-    // NOTE(fda0): I have heavy suspicion that tracking lengths/indexes would be faster
+    // I have heavy suspicion that tracking lengths/indexes would be faster
     
-    Fda0_Lister_Item* fast = source->next;
-    Fda0_Lister_Item* slow = source;
-    /* Advance 'fast' two nodes, and advance 'slow' one node */
+    F0_Lister_Item* fast = source->next;
+    F0_Lister_Item* slow = source;
+    
     while (fast != nullptr)
     {
         fast = fast->next;
@@ -184,8 +177,8 @@ f0_li_split(Fda0_Lister_Item* source)
         }
     }
     
-    /* 'slow' is before the midpoint in the list, so split it in two at that point. */
-    Fda0_Li_Split_Result result = {
+    
+    F0_Li_Split_Result result = {
         source,
         slow->next
     };
@@ -196,17 +189,14 @@ f0_li_split(Fda0_Lister_Item* source)
 }
 
 
-internal Fda0_Lister_Item *
-f0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
+internal F0_Lister_Item *
+f0_li_sorted_merge(F0_Lister_Item *a, F0_Lister_Item *b)
 {
-    // NOTE(fda0): Taken and modified from: https://www.geeksforgeeks.org/merge-sort-for-linked-list/
-    
-    /* Base cases */
     if (a == nullptr) { return b; }
     else if (b == nullptr) { return a; }
     
     
-    // NOTE(fda0): Sorting critera
+    // Sorting critera
     b32 a_goes_first = false;
     if (a->code == b->code)
     {
@@ -215,7 +205,7 @@ f0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
             i32 primary_compare = string_compare(a->primary, b->primary);
             if (primary_compare == 0)
             {
-                if (a->description.size < b->description.size) 
+                if (a->description.size < b->description.size)
                 { 
                     a_goes_first = true; 
                 }
@@ -237,9 +227,8 @@ f0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
     
     
     
-    // NOTE(fda0): Further sorting
-    /* Pick either a or b, and recur */
-    Fda0_Lister_Item *result = nullptr;
+    // Pick either a or b, and recur
+    F0_Lister_Item *result = nullptr;
     if (a_goes_first)
     {
         result = a;
@@ -256,13 +245,13 @@ f0_li_sorted_merge(Fda0_Lister_Item *a, Fda0_Lister_Item *b)
 
 
 internal void
-f0_li_merge_sort(Fda0_Lister_Item **head_ptr)
+f0_li_merge_sort(F0_Lister_Item **head_ptr)
 {
-    Fda0_Lister_Item *head = *head_ptr;
+    F0_Lister_Item *head = *head_ptr;
     if (head == nullptr || head->next == nullptr) { return; }
     
     
-    Fda0_Li_Split_Result split = f0_li_split(head);
+    F0_Li_Split_Result split = f0_li_split(head);
     f0_li_merge_sort(&split.a);
     f0_li_merge_sort(&split.b);
     
@@ -272,19 +261,25 @@ f0_li_merge_sort(Fda0_Lister_Item **head_ptr)
 
 
 
-//~ NOTE(fda0): The main dish
+
+
+
+//~ Mostly barely modified code from default custom layer ahead
+
+
+//~ NOTE(f0): The main dish
 CUSTOM_UI_COMMAND_SIG(f0_jump_to_definition)
 CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to one.")
 {
     Scratch_Block scratch(app);
     
-    String_Const_u8 str_type     = push_stringf(scratch, "type%c", Fda0_CodedDesc_Type);
-    String_Const_u8 str_func     = push_stringf(scratch, "function%c", Fda0_CodedDesc_Function);
-    String_Const_u8 str_func_dec = push_stringf(scratch, "declaration%c", Fda0_CodedDesc_Forward);
-    String_Const_u8 str_macro    = push_stringf(scratch, "macro%c", Fda0_CodedDesc_Macro);
+    String_Const_u8 str_type     = push_stringf(scratch, "type%c", F0_CodedDesc_Type);
+    String_Const_u8 str_func     = push_stringf(scratch, "function%c", F0_CodedDesc_Function);
+    String_Const_u8 str_func_dec = push_stringf(scratch, "declaration%c", F0_CodedDesc_Forward);
+    String_Const_u8 str_macro    = push_stringf(scratch, "macro%c", F0_CodedDesc_Macro);
     
-    Fda0_Lister_Item *head = nullptr;
-    Fda0_Lister_Item *tail = nullptr;
+    F0_Lister_Item *head = nullptr;
+    F0_Lister_Item *tail = nullptr;
     
     Lister_Block lister(app, scratch);
     char *query = "Definition:";
@@ -311,7 +306,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                 
                 
                 String_Const_u8 description = {};
-                Fda0_Coded_Description code = {};
+                F0_Coded_Description code = {};
                 
                 
                 switch (note->note_kind)
@@ -319,13 +314,13 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                     case CodeIndexNote_Type:
                     {
                         description = str_type;
-                        code = Fda0_CodedDesc_Type;
+                        code = F0_CodedDesc_Type;
                     } break;
                     
                     
                     case CodeIndexNote_Function:
                     {
-                        code = Fda0_CodedDesc_Function;
+                        code = F0_CodedDesc_Function;
                         String_Const_u8 arguments_string = {};
                         
                         if(token_array.tokens != 0)
@@ -357,7 +352,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                     {
                                         function_range.max = token->pos + token->size;
                                         
-                                        // NOTE(fda0): Allocate 3 bytes more for "{}" + code
+                                        // NOTE(f0): Allocate 3 bytes more for "{}" + code
                                         arguments_string = f0_push_buffer_range_plus_bonus_space(app, scratch, buffer,
                                                                                                    function_range, 3);
                                         
@@ -373,7 +368,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                                             }
                                             else
                                             {
-                                                code = Fda0_CodedDesc_Forward;
+                                                code = F0_CodedDesc_Forward;
                                                 arguments_string.str[arguments_string.size - 3] = ';';
                                                 --arguments_string.size;
                                             }
@@ -405,7 +400,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
                     case CodeIndexNote_Macro:
                     {
                         description = str_macro;
-                        code = Fda0_CodedDesc_Macro;
+                        code = F0_CodedDesc_Macro;
                     } break;
                 }
                 
@@ -422,19 +417,19 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
     code_index_unlock();
     
     
-    // NOTE(fda0): Merge sort
+    // NOTE(f0): Merge sort
     f0_li_merge_sort(&head);
     
     
-    // NOTE(fda0): Add items to lister
-    for (Fda0_Lister_Item *item = head;
+    // NOTE(f0): Add items to lister
+    for (F0_Lister_Item *item = head;
          item;
          item = item->next)
     {
-        if (item->code == Fda0_CodedDesc_Function ||
-            item->code == Fda0_CodedDesc_Forward)
+        if (item->code == F0_CodedDesc_Function ||
+            item->code == F0_CodedDesc_Forward)
         {
-            char code_char = (char)item->code == Fda0_CodedDesc_Function;
+            char code_char = (char)item->code == F0_CodedDesc_Function;
             
             item->primary = push_stringf(scratch, "%.*s %.*s",
                                          item->primary.size, (char *)item->primary.str, 
@@ -448,7 +443,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
     
     
     
-    // NOTE(fda0): Run lister
+    // NOTE(f0): Run lister
     Lister_Result l_result = run_lister_with_custom_render(app, lister, f0_lister_render);
     Tiny_Jump result = {};
     if (!l_result.canceled && l_result.user_data != 0)
@@ -469,7 +464,7 @@ CUSTOM_DOC("List, sort and preview all definitions in the code index and jump to
 
 
 
-//~ NOTE(fda0): Custom lister render - modified at the end
+//~ NOTE(f0): Custom lister render - modified at the end
 // It decodes color info hidden in node->status
 function void
 f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
@@ -594,7 +589,7 @@ f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
     y_pos += first_index*block_height;
     
     //
-    // NOTE(fda0): Bugfix for default lister_render in 4coder 4.1.7
+    // NOTE(f0): Bugfix for default lister_render in 4coder 4.1.7
     //
     i32 max_count = first_index + lister->visible_count + 6;
     count = clamp_top(lister->filtered.count, max_count);
@@ -635,37 +630,37 @@ f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
         
         Fancy_Line line = {};
         
-        // NOTE(fda0): Modified part - custom colors and description decoding
+        // NOTE(f0): Modified part - custom colors and description decoding
         FColor color_primary = fcolor_id(defcolor_text_default);
         FColor color_secondary = fcolor_id(defcolor_pop2);
         
-        Fda0_Decode_Result decode = f0_decode_description(node->status);
+        F0_Decode_Result decode = f0_decode_description(node->status);
         switch (decode.code)
         {
-            case Fda0_CodedDesc_Type: {
-                color_primary = fcolor_id(Fda0_Color_Type);
+            case F0_CodedDesc_Type: {
+                color_primary = fcolor_id(F0_Color_Type);
             } break;
             
-            case Fda0_CodedDesc_Function: {
-                color_primary = fcolor_id(Fda0_Color_Function);
+            case F0_CodedDesc_Function: {
+                color_primary = fcolor_id(F0_Color_Function);
                 color_secondary = fcolor_id(defcolor_text_default);
             } break;
             
-            case Fda0_CodedDesc_Forward: {
-                color_primary = fcolor_id(Fda0_Color_Fordward_Declaration);
+            case F0_CodedDesc_Forward: {
+                color_primary = fcolor_id(F0_Color_Fordward_Declaration);
                 color_secondary = fcolor_id(defcolor_comment);
             } break;
             
-            case Fda0_CodedDesc_Macro: {
-                color_primary = fcolor_id(Fda0_Color_Macro);
+            case F0_CodedDesc_Macro: {
+                color_primary = fcolor_id(F0_Color_Macro);
             } break;
         }
         
         
         String_Const_u8 primary = node->string;
         
-        if (decode.code == Fda0_CodedDesc_Function ||
-            decode.code == Fda0_CodedDesc_Forward)
+        if (decode.code == F0_CodedDesc_Function ||
+            decode.code == F0_CodedDesc_Forward)
         {
             i64 split_pos = (i64)string_find_first(node->string, 0, ' ');
             primary.size = split_pos;
@@ -687,7 +682,7 @@ f0_lister_render(Application_Links *app, Frame_Info frame_info, View_ID view)
 
 
 
-//~ NOTE(fda0): Barely modified version of default run_lister that allows to specify custom render_caller function
+//~ NOTE(f0): Barely modified version of default run_lister that allows to specify custom render_caller function
 function Lister_Result
 run_lister_with_custom_render(Application_Links *app, Lister *lister, Render_Caller_Function *custom_render_caller)
 {
@@ -910,8 +905,5 @@ run_lister_with_custom_render(Application_Links *app, Lister *lister, Render_Cal
     
     return(lister->out);
 }
-
-
-
 
 
