@@ -3,16 +3,16 @@
 //
 // Define following macros before including this file to change colors:
 #ifndef F0_Color_Type
-#    define F0_Color_Type defcolor_type
+#    define F0_Color_Type fleury_color_index_product_type
 #endif
 #ifndef F0_Color_Function
-#    define F0_Color_Function defcolor_function
+#    define F0_Color_Function fleury_color_index_function
 #endif
 #ifndef F0_Color_Fordward_Declaration
-#    define F0_Color_Fordward_Declaration defcolor_declaration
+#    define F0_Color_Fordward_Declaration fleury_color_index_decl
 #endif
 #ifndef F0_Color_Macro
-#    define F0_Color_Macro defcolor_macro
+#    define F0_Color_Macro fleury_color_index_macro
 #endif
 
 
