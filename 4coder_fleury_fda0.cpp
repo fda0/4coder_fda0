@@ -19,7 +19,7 @@ fda0_initialize_stuff(Application_Links *app)
     casey_switch_to_keybinding_0(app);
 
     time_t timestamp; time(&timestamp);
-    tm *date = gmtime(&timestamp);
+    tm *date = localtime(&timestamp);
     
     
     Scratch_Block scratch(app);

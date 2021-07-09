@@ -1,79 +1,85 @@
 // 0xFFff00ff - unused by me
 
-defcolor_back = 0xFF081a20;
-defcolor_text_default = 0xFFa9bcd0;
-defcolor_list_item = {defcolor_back};
-defcolor_list_item_hover = {defcolor_comment, defcolor_bar};
-defcolor_list_item_active = {defcolor_bar};
-defcolor_cursor = {0xFF2fea60, 0xFFfe2110};
-defcolor_highlight_cursor_line = defcolor_bar;
-defcolor_highlight = 0xFFffaadd;
-defcolor_mark = 0xFFff00ff;                             // ? (not used by me)
-defcolor_at_highlight = defcolor_back;
-defcolor_comment = 0xFF358aa9;
-defcolor_comment_pop = {0xFF50df0a, 0xFFff0000, 0xFFffff00};
-defcolor_at_cursor = defcolor_text_default;             // (not used by me)
+defcolor_back                         = 0xFF081a20;
+defcolor_text_default                 = 0xFFa9bcd0;
+defcolor_list_item                    = {defcolor_back};
+defcolor_list_item_hover              = {defcolor_comment, defcolor_bar};
+defcolor_list_item_active             = {defcolor_bar};
+defcolor_cursor                       = {0xFF2fea60, 0xFFfe2110};
+defcolor_highlight_cursor_line        = defcolor_bar;
+defcolor_highlight                    = 0xFFffaadd;
+defcolor_mark                         = 0xFFff00ff;                             // ? (not used by me)
+defcolor_at_highlight                 = defcolor_back;
+defcolor_comment                      = 0xFF358aa9;
+defcolor_comment_pop                  = {0xFF50df0a, 0xFFff0000, 0xFFffff00};
+defcolor_at_cursor                    = defcolor_text_default;             // (not used by me)
 
-defcolor_keyword = 0xFFfb3640;
-defcolor_preproc = defcolor_keyword;
-defcolor_str_constant = 0xFFecc6b8;
-defcolor_int_constant = 0xFFae81ff;
-defcolor_char_constant = defcolor_int_constant;
-defcolor_float_constant = defcolor_int_constant;
-defcolor_bool_constant = defcolor_int_constant;
-defcolor_include = defcolor_int_constant;
-defcolor_special_character = 0xFFff00ff;                // ?
-defcolor_ghost_character = 0xFFccffff;
+defcolor_keyword                      = 0xFFfb3640;
+defcolor_preproc                      = defcolor_keyword;
+defcolor_str_constant                 = 0xFFecc6b8;
+defcolor_int_constant                 = 0xFFae81ff;
+defcolor_char_constant                = defcolor_int_constant;
+defcolor_float_constant               = defcolor_int_constant;
+defcolor_bool_constant                = defcolor_int_constant;
+defcolor_include                      = defcolor_int_constant;
+defcolor_special_character            = 0xFFff00ff;                // ?
+defcolor_ghost_character              = 0xFFccffff;
 
-defcolor_paste = 0xFFffff00;
-defcolor_undo = 0xFF00ffff;
+defcolor_paste                        = 0xFFffff00;
+defcolor_undo                         = 0xFF00ffff;
 
-defcolor_highlight_junk = 0xba400a0a;
-defcolor_highlight_white = 0x99000000;
+defcolor_highlight_junk               = 0xba400a0a;
+defcolor_highlight_white              = 0x99000000;
 
-defcolor_bar = 0xFF172a3a;
-defcolor_bar_active = 0xFFff00ff;                       // ?
-defcolor_base = 0xFFccc0ad;
-defcolor_pop1 = defcolor_str_constant;
-defcolor_pop2 = defcolor_int_constant;
+defcolor_bar                          = 0xFF172a3a;
+defcolor_bar_active                   = 0xFFff00ff;                       // ?
+defcolor_base                         = 0xFFccc0ad;
+defcolor_pop1                         = defcolor_str_constant;
+defcolor_pop2                         = defcolor_int_constant;
 
-defcolor_back_cycle = {0x080000ff, 0x08ffff00, 0x08ff0000, 0x0800ffff};
-defcolor_text_cycle = {0xFFff6121, 0xFF31ffff, 0xFF31ff31, 0xFFff61ff, 0xFF6161ff, 0xFFffff31};
+defcolor_back_cycle                   = {0x080000ff, 0x08ffff00, 0x08ff0000, 0x0800ffff};
+defcolor_text_cycle                   = {0xFFff6121, 0xFF31ffff, 0xFF31ff31, 0xFFff61ff, 0xFF6161ff, 0xFFffff31};
 
-defcolor_line_numbers_back = defcolor_keyword;
-defcolor_line_numbers_text = defcolor_str_constant;
-defcolor_margin = defcolor_bar;
-defcolor_margin_hover = defcolor_int_constant;
-defcolor_margin_active = defcolor_comment;
+defcolor_line_numbers_back            = defcolor_keyword;
+defcolor_line_numbers_text            = defcolor_str_constant;
+defcolor_margin                       = defcolor_bar;
+defcolor_margin_hover                 = defcolor_int_constant;
+defcolor_margin_active                = defcolor_comment;
 
 // custom - old stuff
-defcolor_type = defcolor_keyword;
-defcolor_function = 0xFF4dd39e;
-defcolor_macro = 0xFFff8141; //0xFFffe082;
-defcolor_declaration = 0xFF2d664c;
-defcolor_hover_background = 0x88000000;
-defcolor_brace_highlight = 0xff8ffff2;
+defcolor_type                         = defcolor_keyword;
+defcolor_function                     = 0xFF4dd39e;
+defcolor_macro                        = 0xFFff8141; //0xFFffe082;
+defcolor_declaration                  = 0xFF2d664c;
+defcolor_hover_background             = 0x88000000;
+defcolor_brace_highlight              = 0xff8ffff2;
 
-// Fleury layer
-fleury_color_syntax_crap = defcolor_text_default;
-fleury_color_operators = defcolor_text_default;
-fleury_color_inactive_pane_overlay = 0x00000023;
+
+fleury_color_syntax_crap              = defcolor_text_default;
+fleury_color_operators                = defcolor_text_default;
+fleury_color_inactive_pane_overlay    = 0x00000023;
 fleury_color_inactive_pane_background = 0xFF09141a;
-fleury_color_file_progress_bar = 0x27ffffff;
-fleury_color_brace_highlight = {0xFFff8181, 0xFF81ffff, 0xFF81ff81, 0xFFff81ff, 0xFF8181ff, 0xFFffff81};
-fleury_color_brace_line = {0x77ff8181, 0x7781ffff, 0x7781ff81, 0x77ff81ff, 0x778181ff, 0x77ffff81};
-fleury_color_brace_annotation = fleury_color_brace_line;
-fleury_color_index_sum_type = defcolor_type;
-fleury_color_index_product_type = defcolor_type;
-fleury_color_index_function = defcolor_function;
-fleury_color_index_macro = defcolor_macro;
-fleury_color_index_constant = 0xFFcce6f4; //0xFF8ab2f5; //0xFF65c9ed; //0xFFff8141;
-fleury_color_index_comment_tag = 0xFFb2ebf2;
-fleury_color_cursor_macro = 0xFFf0aaff;
-fleury_color_cursor_power_mode = {0xFFffff00, 0xFF00ffff}; // cycle doesn't work here
-fleury_color_plot_cycle = {0xFFff4444, 0xFFffff44, 0xFF44ff44, 0xFF44ffff, 0xFF4444ff};
-fleury_color_token_highlight = 0xAA2fea60;
-fleury_color_token_minor_highlight = 0x882fea60;
-fleury_color_comment_user_name = fleury_color_index_comment_tag;
+fleury_color_file_progress_bar        = 0x27ffffff;
+fleury_color_brace_highlight          = {0xFFff8181, 0xFF81ffff, 0xFF81ff81, 0xFFff81ff, 0xFF8181ff, 0xFFffff81};
+fleury_color_brace_line               = {0x77ff8181, 0x7781ffff, 0x7781ff81, 0x77ff81ff, 0x778181ff, 0x77ffff81};
+fleury_color_brace_annotation         = fleury_color_brace_line;
+fleury_color_index_product_type       = defcolor_type;
+fleury_color_index_sum_type           = defcolor_type;
+fleury_color_index_function           = defcolor_function;
+fleury_color_index_macro              = defcolor_macro;
+fleury_color_index_constant           = 0xFFcce6f4; //0xFF8ab2f5; //0xFF65c9ed; //0xFFff8141;
+fleury_color_index_comment_tag        = 0xFFb2ebf2;
+fleury_color_index_decl               = defcolor_declaration;
+fleury_color_cursor_macro             = 0xFFf0aaff;
+fleury_color_cursor_power_mode        = {0xFFffff00, 0xFF00ffff}; // cycle doesn't work here
+fleury_color_plot_cycle               = {0xFFff4444, 0xFFffff44, 0xFF44ff44, 0xFF44ffff, 0xFF4444ff};
+fleury_color_token_highlight          = 0xAA2fea60;
+fleury_color_token_minor_highlight    = 0x882fea60;
+fleury_color_comment_user_name        = fleury_color_index_comment_tag;
 
-f0_compilation_backgroud = fleury_color_inactive_pane_background;
+fleury_color_error_annotation         = 0xffff0000;
+fleury_color_lego_grab                = 0xffefaf6f;
+fleury_color_lego_splat               = 0xffefaaef;
+
+f0_compilation_background              = fleury_color_inactive_pane_background;
+

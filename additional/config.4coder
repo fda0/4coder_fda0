@@ -67,6 +67,7 @@ default_theme_name = "theme-edge-night-sky";
 //default_font_name = "ComicMono.ttf";
 //default_font_size = 18;
 default_font_name = "Hack-Regular.ttf";
+//default_font_name = "PxPlus_IBM_VGA8.ttf";
 default_font_size = 16;
 default_font_hinting = false;
 
@@ -94,3 +95,4 @@ highlight_line_at_cursor = true;
 
 // fleury settings:
 f4_poscontext_draw_at_bottom_of_buffer = true;
+f4_battery_saver = true;

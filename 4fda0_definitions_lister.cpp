@@ -135,8 +135,8 @@ struct F0_Lister_Item
 };
 
 inline F0_Lister_Item *
-f0_push_lister_item(Arena *arena, F0_Lister_Item *tail,
-                      String_Const_u8 primary, String_Const_u8 description, Tiny_Jump *jump, F0_Coded_Description code)
+f0_push_lister_item(Arena *arena, F0_Lister_Item *tail, String_Const_u8 primary,
+                    String_Const_u8 description, Tiny_Jump *jump, F0_Coded_Description code)
 {
     F0_Lister_Item *new_item = push_array(arena, F0_Lister_Item, 1);
     if (tail) {
